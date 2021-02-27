@@ -2,7 +2,7 @@
 \alias{BILFun}
 \title{segregation analysis of BIL population}
 \description{
-Phenotypic observations in BIL population have often been used to identify mixed major-gene plus polygenes inheritance model for quantitative traits in plants.}
+Phenotypic observations in BIL population have often been used to identify mixed major-gene plus polygene inheritance model for quantitative traits in plants.}
 \usage{
 BILFun(df,model,BILfr)
 }
@@ -12,7 +12,7 @@ BILFun(df,model,BILfr)
 	\item{BILfr}{BIL type.}
 	    }
 \author{
-Zhang Ya-Wen, Du Ying-wen,Ren Wen-long and Zhang Yuan-ming\cr
+Wang Jing-Tian, Zhang Ya-Wen, and Zhang Yuan-Ming \cr
 Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
 }
 \examples{

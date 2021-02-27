@@ -1,9 +1,9 @@
 F2Fun<-function(df,model){
 
 data<-sapply(df,as.character)
-  
-dF2<-data[-1,which(data[1,]=="F2")];F2<-as.numeric(dF2[which(is.na(as.numeric(dF2))==FALSE)]);df<-as.data.frame(F2) 
-  
+
+dF2<-data[-1,which(data[1,]=="F2")];F2<-as.numeric(dF2[which(is.na(as.numeric(dF2))==FALSE)]);df<-as.data.frame(F2)
+
 
 F2colname <- c("Model","Log_Max_likelihood_Value","AIC","mean[1]","mean[2]","mean[3]","mean[4]","mean[5]","mean[6]","mean[7]","mean[8]","mean[9]",
                "Var(Residual+Polygene)","Proportion[1]","Proportion[2]","Proportion[3]","Proportion[4]","Proportion[5]","Proportion[6]",
@@ -13,7 +13,7 @@ F2colname <- c("Model","Log_Max_likelihood_Value","AIC","mean[1]","mean[2]","mea
 F2ModelFun<-list(NA)
 ###################################0MG Model##################################
 F2ModelFun[[1]] <- function(K1,logL,df){
-  
+
   data<-as.matrix(as.numeric(df[,1]))
   m_sam <- dim(data)[1]; mean0 <- mean(data); sigma0 <- (sd(data))^2
   #################0MG Model##################
@@ -37,7 +37,7 @@ F2ModelFun[[1]] <- function(K1,logL,df){
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("0MG",round(abc,4),round(AICm,4),round(m,4)," "," "," "," "," "," "," "," ",round(sigma,4),round(mix_pi,4)," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ",round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW,4),tt[4],round(D,4), tt[5])
- 
+
   output<-as.matrix(output)
   OUTPUT<-list(output)
   return(OUTPUT)
@@ -50,7 +50,7 @@ F2ModelFun[[2]] <- function(K1,logL,df){
    m_sam <- dim(data)[1]; d2 <- 3;m_esp <- 0.0001
    mean0 <- mean(data);sigma0 <- (sd(data))^2
   #########1MG-AD Model#########
-  a1 <- sqrt(sigma0/m_sam)
+  a1 <- sqrt(sigma0)
   sigma <- matrix((sigma0/2),3,1)
   m <- as.matrix(c((mean0+2*a1),mean0,(mean0-2*a1)))
   mi <- as.matrix(c(0.25,0.5,0.25))
@@ -70,7 +70,7 @@ F2ModelFun[[2]] <- function(K1,logL,df){
     ##########obtain variance##########
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
-    sigma <- matrix(s0/m_sam,3,1)
+    sigma <- matrix(c(swx/n0),3,1)
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -81,7 +81,7 @@ F2ModelFun[[2]] <- function(K1,logL,df){
   AICm <- -2*abc + 8
   #########first order genetic parameter process##########
   hh1 <- matrix(c(1,1,1,1,0,-1,0,1,0),3,3)
-  b_line1 <- m; B1 <- solve(hh1,b_line1)
+  b_line1 <- m; B1 <- solve(t(hh1)%*%hh1)%*%(t(hh1)%*%b_line1)
   jj <- sigma0 - sigma[1]
   if(jj < 0) {jj <- 0}
   ll <- jj/sigma0
@@ -106,7 +106,7 @@ F2ModelFun[[2]] <- function(K1,logL,df){
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-AD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," ",round(B1[3],4)," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
+
 
   output<-as.matrix(output)
 
@@ -146,7 +146,7 @@ F2ModelFun[[3]] <- function(K1,logL,df)
     ##########obtain variance##########
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
-    sigma <- matrix(s0/m_sam,3,1)
+    sigma <- matrix(c(swx/n0),3,1)
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -179,13 +179,13 @@ F2ModelFun[[3]] <- function(K1,logL,df)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P3,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-A",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -216,7 +216,7 @@ F2ModelFun[[4]] <- function(K1,logL,df){
     ##########obtain variance##########
     for(i in 1:d3) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
-    sigma <- matrix(s0/m_sam,2,1)
+    sigma <- matrix(c(swx/n0),2,1)
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -249,13 +249,13 @@ F2ModelFun[[4]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P4,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-EAD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -269,7 +269,7 @@ F2ModelFun[[5]] <- function(K1,logL,df){
   a1 <- sqrt(sigma0/m_sam)
   sigma <- matrix((sigma0/2),2,1)
   m <- as.matrix(c((mean0-2*a1),(mean0+2*a1)))
-  mi <- as.matrix(c(0.25,0.75))
+  mi <- as.matrix(c(0.75,0.25))
   L0 <- sum(log(dmixnorm(data,m,sqrt(sigma),mi)))
   ##########iteration process###########
   iteration <- 0; stopa <- 1000
@@ -296,7 +296,7 @@ F2ModelFun[[5]] <- function(K1,logL,df){
   abc <- logL(m_sam,d3,mix_pi,m,sigma,data)
   AICm <- -2*abc + 8
   #########first order genetic parameter process##########
-  hh1 <- matrix(c(1,1,1,-1),2,2)
+  hh1 <- matrix(c(1,1,-1,1),2,2)
   B1 <- solve(t(hh1)%*%hh1)%*%(t(hh1)%*%m)
   jj <- sigma0 - sigma[1]
   if(jj < 0) {jj <- 0}
@@ -319,13 +319,13 @@ F2ModelFun[[5]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P4,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-NCD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -371,7 +371,7 @@ F2ModelFun[[6]] <- function(K1,logL,df)
   hh5 <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,-1,-1,-1,1,0,-1,1,0,-1,1,0,-1,
                   0,0,0,1,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,-1,0,0,0,-1,0,1,0,1,
                   0,0,0,0,0,-1,0,0,0,0,1,0,-1,0,0,0,0,0,0,0,1,0,0,0,0),9,9)
-  b_line5 <- m; B5 <- solve(hh5,b_line5)
+  b_line5 <- m; B5 <- solve(t(hh5)%*%hh5)%*%(t(hh5)%*%b_line5)
   jj <- sigma0 - sigma[1]
   if(jj < 0) {jj <- 0}
   ll <- jj/sigma0
@@ -393,13 +393,13 @@ F2ModelFun[[6]] <- function(K1,logL,df)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-ADI",round(abc,4),round(AICm,4),round(t(m),4),round(sigma[1],4),round(t(mix_pi),4),round(t(B5),4),round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -460,7 +460,7 @@ F2ModelFun[[7]] <- function(K1,logL,df){
     ##########obtain variance##########
     for(i in 1:d4) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
-    sigma <- matrix(s0/m_sam,9,1)
+    sigma <- matrix(swx/n0,9,1)
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -470,7 +470,7 @@ F2ModelFun[[7]] <- function(K1,logL,df){
   abc <- logL(m_sam,d4,mix_pi,m,sigma,data)
   AICm <- -2*abc + 12
   #########first order genetic parameter process##########
-  hh61 <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,-1,-1,-1,1,0,-1,1,0,
+  hh61 <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,-1,-1,-1,1,0,-1,1,0,
                    -1,1,0,-1,0,0,0,1,1,1,0,0,0,0,1,0,0,1,0,0,1,0),9,5)
   B61 <- solve(t(hh61)%*%hh61)%*%(t(hh61)%*%m)
   jj <- sigma0 - sigma[1]
@@ -494,13 +494,13 @@ F2ModelFun[[7]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-AD",round(abc,4),round(AICm,4),round(t(m),4),round(sigma[1],4),round(t(mix_pi),4),round(t(B61),4)," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -564,17 +564,17 @@ F2ModelFun[[8]] <- function(K1,logL,df){
     b_line7[4] <- sumwx[3]/n0[3]-2.0*sumwx[5]/n0[5]+sumwx[7]/n0[7]
     b_line7[5] <- sumwx[4]/n0[4]-2.0*sumwx[5]/n0[5]+sumwx[6]/n0[6]
     b_line7[6] <- sumwx[4]/n0[4]-sumwx[6]/n0[6]-2.0*sumwx[8]/n0[8]+2.0*sumwx[9]/n0[9]
-    B7 <- solve(hh7,b_line7)
+    B7 <- solve(t(hh7)%*%hh7)%*%(t(hh7)%*%b_line7)
     #################################################
     m[1] <- (sumwx[1]-sigma[1]*(B7[1]+B7[2]))/n0[1]; m[2] <- (sumwx[2]+sigma[2]*(2.0*B7[1]-B7[3]))/n0[2]
     m[3] <- (sumwx[3]-sigma[3]*(B7[1]-B7[3]+B7[4]))/n0[3]; m[4] <- (sumwx[4]-sigma[4]*(B7[5]+B7[6]))/n0[4]
     m[5] <- (sumwx[5]+sigma[5]*2.0*(B7[2]+B7[4]+B7[5]))/n0[5]; m[6] <- (sumwx[6]-sigma[6]*(B7[5]+B7[6]))/n0[6]
     m[7] <- (sumwx[7]-sigma[7]*B7[4])/n0[7]; m[8] <- (sumwx[8]+sigma[8]*(B7[3]+2.0*B7[6]))/n0[8]
-    m[9] <- (sumwx[9]-sigma[9]*(B7[2]+B7[3]+2.0*B7[6]))/n0[9]
+    m[9] <- (sumwx[6]-sigma[6]*(B7[2]+B7[3]+2*B7[6]))/n0[6]
     ##########obtain variance##########
     for(i in 1:d4) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
-    sigma <- matrix(s0/m_sam,9,1)
+    sigma <- matrix(c(swx/n0),9,1)
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -584,7 +584,7 @@ F2ModelFun[[8]] <- function(K1,logL,df){
   abc <- logL(m_sam,d4,mix_pi,m,sigma,data)
   AICm <- -2*abc + 8
   #########first order genetic parameter process##########
-  hh71 <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,-1,-1,-1,1,0,-1,1,0,-1,1,0,-1),9,3)
+  hh71 <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,-1,-1,-1,1,0,-1,1,0,-1,1,0,-1),9,3)
   B71 <- solve(t(hh71)%*%hh71)%*%(t(hh71)%*%m)
   jj <- sigma0 - sigma[1]
   if(jj < 0) {jj <- 0}
@@ -607,13 +607,13 @@ F2ModelFun[[8]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-A",round(abc,4),round(AICm,4),round(t(m),4),round(sigma[1],4),round(t(mix_pi),4),round(t(B71),4)," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -666,7 +666,7 @@ F2ModelFun[[9]] <- function(K1,logL,df){
     ##########obtain variance##########
     for(i in 1:d5) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
-    sigma <- matrix(s0/m_sam,5,1)
+    sigma <- matrix(c(swx/n0),5,1)
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -699,13 +699,13 @@ F2ModelFun[[9]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-EA",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," ",round(t(B81),4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -773,13 +773,13 @@ F2ModelFun[[10]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-CD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," ",round(t(B9),4)," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -847,13 +847,13 @@ F2ModelFun[[11]] <- function(K1,logL,df){
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
   tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
-  
+
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-EAD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," ",round(t(B10),4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
- 
-  
+
+
   output<-as.matrix(output)
-  
+
   OUTPUT<-list(output,mi)
   return(OUTPUT)
 }
@@ -868,14 +868,14 @@ K1F2 <- function(x){
   V0 <- V0 + (gamma(j+0.5)*sqrt(4*j+1)/(gamma(0.5)*gamma(j+1)))*exp(-(4*j+1)^2/(16*x))*(I1-I2)}
   V <- (1/sqrt(2*x))*V0
   return (1-V)
-} 
+}
 
-logLF2 <- function(nm,nng,mi,mn,s,d1) { sum2 <- sum(log(dmixnorm(d1,mn,sqrt(s),mi)));return (sum2) } 
+logLF2 <- function(nm,nng,mi,mn,s,d1) { sum2 <- sum(log(dmixnorm(d1,mn,sqrt(s),mi)));return (sum2) }
 
 
 
 if(model=="All models"){
-  
+
   cl.cores <- detectCores()
   if(cl.cores<=2){
     cl.cores<-1
@@ -890,8 +890,8 @@ if(model=="All models"){
   registerDoParallel(cl)
  i<-NULL
  allresult=foreach(i=1:11,.combine = 'rbind')%dopar%{
-    requireNamespace("KScorrect")
-    requireNamespace("kolmim")
+   requireNamespace("KScorrect")
+   requireNamespace("kolmim")
     F2ModelFun[[i]](K1F2,logLF2,df)[[1]]
   }
 
@@ -904,7 +904,7 @@ if(model=="All models"){
 
  allresult<-allresultq[[1]]
  if(model!="0MG"){
- mi<-allresultq[[2]]  
+ mi<-allresultq[[2]]
  }else{
  mi<-NULL
  }
@@ -918,12 +918,12 @@ return(out)
 
 
 
-  
 
-   
-    
-   
-    
+
+
+
+
+
 
 
 

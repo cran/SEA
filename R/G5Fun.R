@@ -8,14 +8,14 @@ dP2<-data[-1,which(data[1,]=="P2")];P2<-as.numeric(dP2[which(is.na(as.numeric(dP
 dF2<-data[-1,which(data[1,]=="F2")];F2<-as.numeric(dF2[which(is.na(as.numeric(dF2))==FALSE)]);df41<-as.data.frame(F2)
 dF23<-data[-1,which(data[1,]=="F23")];F23<-as.numeric(dF23[which(is.na(as.numeric(dF23))==FALSE)]);df51<-as.data.frame(F23)
 
-G5colname<-c("Model","Log_Max_likelihood_Value","AIC","meanP1","meanF1","meanP2","meanF2[1]","meanF2[2]","meanF2[3]","meanF2[4]","meanF2[5]","meanF2[6]","meanF2[7]","meanF2[8]","meanF2[9]","VarF2(Component)",	
-             "Proportion(F2)[1]","Proportion(F2)[2]","Proportion(F2)[3]","Proportion(F2)[4]","Proportion(F2)[5]","Proportion(F2)[6]","Proportion(F2)[7]","Proportion(F2)[8]","Proportion(F2)[9]",	
+G5colname<-c("Model","Log_Max_likelihood_Value","AIC","meanP1","meanF1","meanP2","meanF2[1]","meanF2[2]","meanF2[3]","meanF2[4]","meanF2[5]","meanF2[6]","meanF2[7]","meanF2[8]","meanF2[9]","VarF2(Component)",
+             "Proportion(F2)[1]","Proportion(F2)[2]","Proportion(F2)[3]","Proportion(F2)[4]","Proportion(F2)[5]","Proportion(F2)[6]","Proportion(F2)[7]","Proportion(F2)[8]","Proportion(F2)[9]",
              "meanF2:3[1]","meanF2:3[2]","meanF2:3[3]","meanF2:3[4]","meanF2:3[5]","meanF2:3[6]","meanF2:3[7]","meanF2:3[8]","meanF2:3[9]","VarF2:3[1]","VarF2:3[2]","VarF2:3[3]","VarF2:3[4]","VarF2:3[5]","VarF2:3[6]","VarF2:3[7]","VarF2:3[8]","VarF2:3[9]",
              "Proportion(F2:3)[1]","Proportion(F2:3)[2]","Proportion(F2:3)[3]","Proportion(F2:3)[4]","Proportion(F2:3)[5]","Proportion(F2:3)[6]","Proportion(F2:3)[7]","Proportion(F2:3)[8]","Proportion(F2:3)[9]","Var(Residual)",
-             "m1(m)","m2","m3","m4","m5","da(d)","db","ha(h)","hb","i","jab","jba","l","[d]","[h]","Major-Gene Var(F2)","Heritability(Major-Gene(F2))(%)","Poly-Gene Var(F2)","Heritability(Poly-Gene(F2))(%)","Major-Gene Var(F2:3)","Heritability(Major-Gene(F2:3))(%)","Poly-Gene Var(F2:3)",	"Heritability(Poly-Gene(F2:3))(%)",	
-             "U1 square(P1)","P(U1 square(P1))","U2 square(P1)","P(U2 square(P1))","U3 square(P1)","P(U3 square(P1))","nW square(P1)","P(nW square(P1))","Dn(P1)","P(Dn(P1))","U1 square(F1)","P(U1 square(F1))","U2 square(F1)","P(U2 square(F1))","U3 square(F1)","P(U3 square(F1))","nW square(F1)","P(nW square(F1))","Dn(F1)","P(Dn(F1))",	
-             "U1 square(P2)","P(U1 square(P2))","U2 square(P2)","P(U2 square(P2))","U3 square(P2)","P(U3 square(P2))","nW square(P2)","P(nW square(P2))","Dn(P2)","P(Dn(P2))","U1 square(F2)","P(U1 square(F2))","U2 square(F2)","P(U2 square(F2))","U3 square(F2)","P(U3 square(F2))","nW square(F2)","P(nW square(F2))","Dn(F2)","P(Dn(F2))",	
-             "U1 square(F2:3)","P(U1 square(F2:3))","U2 square(F2:3)","P(U2 square(F2:3))","U3 square(F2:3)","P(U3 square(F2:3))","nW square(F2:3)","P(nW square(F2:3))","Dn(F2:3)","P(Dn(F2:3))")  
+             "m1(m)","m2","m3","m4","m5","da(d)","db","ha(h)","hb","i","jab","jba","l","[d]","[h]","Major-Gene Var(F2)","Heritability(Major-Gene(F2))(%)","Poly-Gene Var(F2)","Heritability(Poly-Gene(F2))(%)","Major-Gene Var(F2:3)","Heritability(Major-Gene(F2:3))(%)","Poly-Gene Var(F2:3)",	"Heritability(Poly-Gene(F2:3))(%)",
+             "U1 square(P1)","P(U1 square(P1))","U2 square(P1)","P(U2 square(P1))","U3 square(P1)","P(U3 square(P1))","nW square(P1)","P(nW square(P1))","Dn(P1)","P(Dn(P1))","U1 square(F1)","P(U1 square(F1))","U2 square(F1)","P(U2 square(F1))","U3 square(F1)","P(U3 square(F1))","nW square(F1)","P(nW square(F1))","Dn(F1)","P(Dn(F1))",
+             "U1 square(P2)","P(U1 square(P2))","U2 square(P2)","P(U2 square(P2))","U3 square(P2)","P(U3 square(P2))","nW square(P2)","P(nW square(P2))","Dn(P2)","P(Dn(P2))","U1 square(F2)","P(U1 square(F2))","U2 square(F2)","P(U2 square(F2))","U3 square(F2)","P(U3 square(F2))","nW square(F2)","P(nW square(F2))","Dn(F2)","P(Dn(F2))",
+             "U1 square(F2:3)","P(U1 square(F2:3))","U2 square(F2:3)","P(U2 square(F2:3))","U3 square(F2:3)","P(U3 square(F2:3))","nW square(F2:3)","P(nW square(F2:3))","Dn(F2:3)","P(Dn(F2:3))")
 
 
 G5ModelFun<-list(NA)
@@ -75,11 +75,11 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     n0[4]<-mi5[2]*m_sam[5]
     n0[c(1:4)][abs(n0[c(1:4)])<0.000001] <- 0.000001
     aa3<-s0[1]/n0[1]+s0[3]/n0[3]+2*s0[2]/n0[2]-4*s0[4]/n0[4]
-    aa4<-sigma*(1/n0[1]+1/n0[3]+4/n0[2])   
+    aa4<-sigma*(1/n0[1]+1/n0[3]+4/n0[2])
     aa1<-1000
     n_iter<-0
     while(aa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1:3],m5[2]))
       B11<-solve(crossprod(hh1,hh1))%*%crossprod(hh1,mm)
@@ -94,12 +94,12 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       m5[2]<-(s0[4]+4*aaa1*sigma5[2])/n0[4]
       aa1<-abs(aaa1-aaa0)
       aaa0<-aaa1
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
-    m4[c(1:3)]<-m[c(1:3)];m5[c(1,3)]<-m[c(1,3)] 
+    m4[c(1:3)]<-m[c(1:3)];m5[c(1,3)]<-m[c(1,3)]
     ########obtain variance#######################
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[5]<-ss1+ss2+ss3+swx24[1]+swx24[2]+swx24[3]+(swx25[1]+swx25[3])*m_nf
     n0[5]<-m_sam[1]+m_sam[2]+m_sam[3]+m_sam[4]+(mi5[1]+mi5[3])*m_sam[5]
     n0[6]<-mi5[2]*m_sam[5]
@@ -116,12 +116,12 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma<-(s0[5]+aa2^2*swx25[2])/(n0[5]+aa2*n0[6])
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
     if(sigma<sigma0){sigma<-sigma0}
     sigma4[c(1,2,3)]<-sigma
     sigma5[1]<-sigma/m_nf;sigma5[2]<-(sigma+aa1)/m_nf;sigma5[3]<-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -133,14 +133,14 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   AIC<--2*abc+2*4
   mm<-as.matrix(c(m[1:3],m5[2]))
   B1111<-solve(crossprod(hh1,hh1))%*%crossprod(hh1,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -156,7 +156,7 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
   P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
-  
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -174,7 +174,7 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
   F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
-  
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -192,10 +192,10 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
-  
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -214,10 +214,10 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2u <- as.matrix(c(12*m_sam[4]*((F2dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F2dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F2dd[3]/m_sam[4]-1/12)^2)))
   F2D <- as.numeric(ks.test(F2P2,"punif")[[1]][1])
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
-  
+
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -236,11 +236,11 @@ G5ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3u <- as.matrix(c(12*m_sam[5]*((F3dd[1]/m_sam[5]-0.5)^2),((45*m_sam[5])/4)*((F3dd[2]/m_sam[5]-1/3)^2),180*m_sam[5]*((F3dd[3]/m_sam[5]-1/12)^2)))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
-  
+
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("1MG-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B1111[1],4)," "," "," "," ",round(B1111[2],4)," ",round(B1111[3],4)," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -299,10 +299,10 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     s0[1]<-sumx[1]+sumwx4[1]+m_nf*sumwx5[1];s0[3]<-sumx[3]+sumwx4[3]+m_nf*sumwx5[3]
     n0[1]<-m_sam[1]+mi4[1]*m_sam[4]+mi5[1]*m_sam[5]*m_nf;n0[3]<-m_sam[3]+mi4[3]*m_sam[4]+mi5[3]*m_sam[5]*m_nf
     n0[c(1:3)][abs(n0[c(1:3)])<0.000001] <- 0.000001
-    aa1<-s0[1]/n0[1]+s0[3]/n0[3];aa2<-sigma*(1/n0[1]+1/n0[3])   
+    aa1<-s0[1]/n0[1]+s0[3]/n0[3];aa2<-sigma*(1/n0[1]+1/n0[3])
     aa6<-1000;n_iter<-0
     while(aa6>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       B22<-solve(crossprod(hh2,hh2))%*%crossprod(hh2,m[c(1:3)])
       aa3<-B22[2]
@@ -317,12 +317,12 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       m[3]<-(s0[3]-aaa1*sigma)/n0[3]
       aa6<-abs(aaa1-aaa0)
       aaa0<-aaa1
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
-    m4[c(1:3)]<-m[c(1:3)];m5[c(1:3)]<-m[c(1:3)] 
+    m4[c(1:3)]<-m[c(1:3)];m5[c(1:3)]<-m[c(1:3)]
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[5]<-ss1+ss2+ss3+swx24[1]+swx24[2]+swx24[3]+(swx25[1]+swx25[3])*m_nf
     n0[5]<-m_sam[1]+m_sam[2]+m_sam[3]+m_sam[4]+(mi5[1]+mi5[3])*m_sam[5]
     aaa0<-sigma
@@ -336,12 +336,12 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma<-(s0[5]+aa2^2*m_nf*swx25[2])/(n0[5]+aa2*mi5[2]*m_sam[5])
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
-    
+
     if(sigma<sigma0){sigma<-sigma0}
     sigma4[c(1,2,3)]<-sigma;sigma5[1]<-sigma/m_nf;sigma5[2]<-(sigma+aa1)/m_nf;sigma5[3]<-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -351,16 +351,16 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*3
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   B2222<-solve(crossprod(hh2,hh2))%*%crossprod(hh2,m[c(1:3)])
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -376,7 +376,7 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
   P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
-  
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -394,7 +394,7 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
   F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
-  
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -412,10 +412,10 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
-  
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -434,10 +434,10 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2u <- as.matrix(c(12*m_sam[4]*((F2dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F2dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F2dd[3]/m_sam[4]-1/12)^2)))
   F2D <- as.numeric(ks.test(F2P2,"punif")[[1]][1])
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
-  
+
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -456,11 +456,11 @@ G5ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3u <- as.matrix(c(12*m_sam[5]*((F3dd[1]/m_sam[5]-0.5)^2),((45*m_sam[5])/4)*((F3dd[2]/m_sam[5]-1/3)^2),180*m_sam[5]*((F3dd[3]/m_sam[5]-1/12)^2)))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
-  
+
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("1MG-A",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B2222[1],4)," "," "," "," ",round(B2222[2],4)," "," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -524,13 +524,13 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     n0[3]<-mi5[2]*m_sam[5]
     n0[c(1:3)][abs(n0[c(1:3)])<0.000001] <- 0.000001
     aa2<-3*s0[1]/n0[1]+s0[2]/n0[2]-4*s0[3]/n0[3]
-    aa3<-9*sigma/n0[1]+sigma/n0[2]   
+    aa3<-9*sigma/n0[1]+sigma/n0[2]
     aa1<-1000;n_iter<-0
     while(aa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[3],m5[2]))
-      B31<-solve(crossprod(hh3,hh3))%*%crossprod(hh3,mm) 
+      B31<-solve(crossprod(hh3,hh3))%*%crossprod(hh3,mm)
       aa1<-B31[2];aa1<-0.75*aa1^2
       sigma5[2]<-(sigma+aa1)/m_nf
       ############restrictions#######################
@@ -540,18 +540,18 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       m5[2]<-(s0[3]+4*aaa1*sigma5[2])/n0[3]
       aa1<-abs(aaa1-aaa0)
       aaa0<-aaa1
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
     m[2]<-m4[1]<-m5[1]<-m[1];m4[2]<-m5[3]<-m[3]
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[4]<-ss1+ss2+ss3+swx24[1]+swx24[2]+m_nf*(swx25[1]+swx25[3])
     n0[4]<-m_sam[1]+m_sam[2]+m_sam[3]+m_sam[4]+(mi5[1]+mi5[3])*m_sam[5]
     aaa0<-sigma
     ########first order genetic parameters##############
     mm<-as.matrix(c(m[1],m[3],m5[2]))
-    B311<-solve(crossprod(hh3,hh3))%*%crossprod(hh3,mm) 
+    B311<-solve(crossprod(hh3,hh3))%*%crossprod(hh3,mm)
     aa1<-B311[2];aa1<-0.75*aa1^2
     n_iter<-0;aa3<-1000
     while(aa3>0.0001){
@@ -560,12 +560,12 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma<-(s0[4]+aa2^2*m_nf*swx25[2])/(n0[4]+aa2*n0[3])
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
-    
+
     if(sigma<sigma0){sigma<-sigma0}
     sigma4[c(1,2)]<-sigma;sigma5[1]<-sigma/m_nf;sigma5[2]<-(sigma+aa1)/m_nf;sigma5[3]<-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -575,17 +575,17 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*3
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[3],m5[2]))
   B3111<-solve(crossprod(hh3,hh3))%*%crossprod(hh3,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -601,7 +601,7 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
   P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
-  
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -619,7 +619,7 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
   F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
-  
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -637,10 +637,10 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
-  
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d2)
   for(i in 1:d2){
@@ -659,10 +659,10 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2u <- as.matrix(c(12*m_sam[4]*((F2dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F2dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F2dd[3]/m_sam[4]-1/12)^2)))
   F2D <- as.numeric(ks.test(F2P2,"punif")[[1]][1])
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
-  
+
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -682,9 +682,9 @@ G5ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("1MG-EAD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B3111[1],4)," "," "," "," ",round(B3111[2],4)," "," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -748,13 +748,13 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     n0[3]<-mi5[2]*m_sam[5]
     n0[c(1:3)][abs(n0[c(1:3)])<0.000001] <- 0.000001
     aa2<-s0[1]/n0[1]+3*s0[2]/n0[2]-4*s0[3]/n0[3]
-    aa3<-sigma*(1/n0[1]+9/n0[2])   
+    aa3<-sigma*(1/n0[1]+9/n0[2])
     aa1<-1000;n_iter<-0
     while(aa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[3],m5[2]))
-      B41<-solve(crossprod(hh4,hh4))%*%crossprod(hh4,mm) 
+      B41<-solve(crossprod(hh4,hh4))%*%crossprod(hh4,mm)
       aa1<-B41[2];aa1<-0.75*aa1^2
       sigma5[2]<-(sigma+aa1)/m_nf
       ############restrictions#######################
@@ -764,19 +764,19 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       m5[2]<-(s0[3]+4*aaa1*sigma5[2])/n0[3]
       aa1<-abs(aaa1-aaa0)
       aaa0<-aaa1
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
     m[2]<-m4[2]<-m5[3]<-m[3]
     m4[1]<-m5[1]<-m[1]
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[4]<-ss1+ss2+ss3+swx24[1]+swx24[2]+m_nf*(swx25[1]+swx25[3])
     n0[4]<-m_sam[1]+m_sam[2]+m_sam[3]+m_sam[4]+(mi5[1]+mi5[3])*m_sam[5]
     aaa0<-sigma
     ########first order genetic parameters##############
     mm<-as.matrix(c(m[1],m[3],m5[2]))
-    B411<-solve(crossprod(hh4,hh4))%*%crossprod(hh4,mm) 
+    B411<-solve(crossprod(hh4,hh4))%*%crossprod(hh4,mm)
     aa1<-B411[2];aa1<-0.75*aa1^2
     n_iter<-0;aa3<-1000
     while(aa3>0.0001){
@@ -785,11 +785,11 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma<-(s0[4]+aa2^2*m_nf*swx25[2])/(n0[4]+aa2*mi5[2]*m_sam[5])
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
-      if(n_iter>20) break 
+      if(n_iter>20) break
     }
     if(sigma<sigma0){sigma<-sigma0}
     sigma4[c(1,2)]<-sigma;sigma5[1]<-sigma/m_nf;sigma5[2]<-(sigma+aa1)/m_nf;sigma5[3]<-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -799,17 +799,17 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*3
-  ########first order genetic parameters###############    
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[3],m5[2]))
   B4111<-solve(crossprod(hh4,hh4))%*%crossprod(hh4,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -825,7 +825,7 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
   P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
-  
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -843,7 +843,7 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
   F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
-  
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -861,10 +861,10 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
-  
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d2)
   for(i in 1:d2){
@@ -883,10 +883,10 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2u <- as.matrix(c(12*m_sam[4]*((F2dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F2dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F2dd[3]/m_sam[4]-1/12)^2)))
   F2D <- as.numeric(ks.test(F2P2,"punif")[[1]][1])
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
-  
+
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -906,9 +906,9 @@ G5ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("1MG-NCD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B4111[1],4)," "," "," "," ",round(B4111[2],4)," "," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -1070,10 +1070,10 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B511-AA))
       AA<-B511
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[15]<-sum(swx24)+ss1+ss2+ss3
     n0[15]<-nn[1]+nn[2]+nn[3]+nn[4]+nn[5]*(mi5[1]+mi5[3]+mi5[7]+mi5[9])
     n0[16]<-mi5[2]*nn[5];n0[17]<-mi5[4]*nn[5];n0[18]<-mi5[5]*nn[5]
@@ -1095,13 +1095,13 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma<-(s0[15]+m_nf*(swx25[1]+swx25[3]+swx25[7]+swx25[9]+aa1^2*swx25[2]+aa2^2*swx25[4]+aa3^2*swx25[5]+aa4^2*swx25[6]+aa5^2*swx25[8]))/(n0[15]+aa1*n0[16]+aa2*n0[17]+aa3*n0[18]+aa4*n0[19]+aa5*n0[20])
       aaa1<-abs(sigma-aaa0)
       aaa0<-sigma
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     if(sigma<sigma0){sigma<-sigma0}
     sigma4[c(1:9)]<-sigma
     sigma5[c(1,3,7,9)]<-sigma/m_nf;sigma5[2]<-(sigma+g_aa1)/m_nf;sigma5[4]<-(sigma+g_aa2)/m_nf
     sigma5[5]<-(sigma+g_aa5)/m_nf;sigma5[6]<-(sigma+g_aa3)/m_nf;sigma5[8]<-(sigma+g_aa4)/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -1114,14 +1114,14 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[2],m4[3],m4[4],m4[6],m4[7],m4[8],m5[2],m5[4],m5[5],m5[6],m5[8]))
   B51111<-solve(crossprod(hh5,hh5))%*%crossprod(hh5,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -1137,7 +1137,7 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
   P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
-  
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -1155,7 +1155,7 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
   F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
-  
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -1175,7 +1175,7 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -1196,7 +1196,7 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -1216,9 +1216,9 @@ G5ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("2MG-ADI",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B51111[1],4)," "," "," "," ",round(B51111[2],4),round(B51111[3],4),round(B51111[4],4),round(B51111[5],4),round(B51111[6],4),round(B51111[7],4),round(B51111[8],4),round(B51111[9],4)," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -1376,7 +1376,7 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
           hh[i,j]<-hh[j,i]
         }
       }
-      #################################################################### 
+      ####################################################################
       b_line[1]<-s0[1]/n0[1]+2*s0[2]/n0[2]+s0[3]/n0[3]-4*s0[12]/n0[12]
       b_line[2]<-s0[1]/n0[1]+2*s0[4]/n0[4]+s0[5]/n0[5]-4*s0[10]/n0[10]
       b_line[3]<-s0[1]/n0[1]+2*s0[6]/n0[6]+s0[8]/n0[8]-4*s0[11]/n0[11]
@@ -1407,10 +1407,10 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B611-AA))
       AA<-B611
       if (n_iter>20) break
-    }  
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[15]<-sum(swx24)+ss1+ss2+ss3+(swx25[1]+swx25[3]+swx25[7]+swx25[9])*m_nf
     n0[15]<-nn[1]+nn[2]+nn[3]+nn[4]+nn[5]*(mi5[1]+mi5[3]+mi5[7]+mi5[9])
     mm<-as.matrix(c(m[1],m[2],m[3],m4[2],m4[3],m4[4],m4[6],m4[7],m4[8],m5[2],m5[4],m5[5],m5[6],m5[8]))
@@ -1431,12 +1431,12 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa6<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[c(1:9)]<-sigma;sigma5[c(1,3,7,9)]<-sigma/m_nf
     sigma5[2]<-(sigma+g_aa1)/m_nf;sigma5[4]<-(sigma+g_aa2)/m_nf
     sigma5[5]<-(sigma+g_aa3)/m_nf;sigma5[6]<-sigma5[4];sigma5[8]<-sigma5[2]
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -1449,14 +1449,14 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[2],m4[3],m4[4],m4[6],m4[7],m4[8],m5[2],m5[4],m5[5],m5[6],m5[8]))
   B61111<-solve(crossprod(hh6,hh6))%*%crossprod(hh6,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -1508,7 +1508,7 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -1529,7 +1529,7 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -1549,9 +1549,9 @@ G5ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("2MG-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B61111[1],4)," "," "," "," ",round(B61111[2],4),round(B61111[3],4),round(B61111[4],4),round(B61111[5],4)," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -1699,10 +1699,10 @@ G5ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa1<-max(abs(B711-AA))
       AA<-B711
       if (n_iter>20) break
-    }  
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[11]<-sum(swx24)+ss1+ss2+ss3+(swx25[1]+swx25[3]+swx25[7]+swx25[9])*m_nf
     n0[11]<-nn[1]+nn[2]+nn[3]+nn[4]+(mi5[1]+mi5[3]+mi5[7]+mi5[9])*nn[5]
     n0[12]<-mi5[2]*nn[5];n0[13]<-mi5[4]*nn[5];n0[14]<-mi5[5]*nn[5]
@@ -1723,12 +1723,12 @@ G5ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa4<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[c(1:9)]<-sigma;sigma5[c(1,3,7,9)]<-sigma/m_nf
     sigma5[2]<-(sigma+g_aa1)/m_nf;sigma5[4]<-(sigma+g_aa2)/m_nf
     sigma5[5]<-(sigma+g_aa3)/m_nf;sigma5[6]<-sigma5[4];sigma5[8]<-sigma5[2]
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -1741,14 +1741,14 @@ G5ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[2],m4[3],m4[4],m4[6],m4[7],m4[8],m5[2],m5[4],m5[5],m5[6],m5[8]))
   B71111<-solve(crossprod(hh7,hh7))%*%crossprod(hh7,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -1800,7 +1800,7 @@ G5ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -1821,7 +1821,7 @@ G5ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -1841,9 +1841,9 @@ G5ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("2MG-A",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B71111[1],4)," "," "," "," ",round(B71111[2],4),round(B71111[3],4)," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -1935,7 +1935,7 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
           hh[i,j]<-hh[j,i]
         }
       }
-      #################################################################### 
+      ####################################################################
       b_line[1]<-s0[1]/n0[1]+s0[2]/n0[2]-2*s0[4]/n0[4]
       b_line[2]<-2*s0[2]/n0[2]-s0[4]/n0[4]-s0[5]/n0[5]
       b_line[3]<-s0[2]/n0[2]+s0[3]/n0[3]-2*s0[5]/n0[5]
@@ -1948,7 +1948,7 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B811-AA))
       AA<-B811
       if (n_iter>20) break
-    }  
+    }
     m4[1]<-m[1];m4[3]<-m[2];m4[5]<-m[3]
     m5[1]<-m[1];m5[2]<-m4[2];m5[3]<-m[2]
     m5[4]<-m[2];m5[5]<-m4[4];m5[6]<-m[3]
@@ -1959,7 +1959,7 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     aa6<-aa6^2
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d5) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d5) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[6]<-sum(swx24)+ss1+ss2+ss3+(swx25[1]+swx25[3]+swx25[6])*m_nf
     n0[6]<-nn[1]+nn[2]+nn[3]+nn[4]+(mi5[1]+mi5[3]+mi5[6])*nn[5]
     n0[7]<-(mi5[2]+mi5[5])*nn[5]
@@ -1973,14 +1973,14 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[c(1:5)]<-sigma
     #######first order parameters############
     sigma5[1]<-sigma/m_nf;sigma5[2]<-(sigma+0.5*aa6)/m_nf
     sigma5[3]<-sigma/m_nf;sigma5[4]<-(sigma+aa6)/m_nf
     sigma5[5]<-sigma5[2];sigma5[6]<-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -1993,14 +1993,14 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[2],m4[4]))
   B81111<-solve(crossprod(hh8,hh8))%*%crossprod(hh8,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -2052,7 +2052,7 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d5)
   for(i in 1:d5){
@@ -2073,7 +2073,7 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d6)
   for(i in 1:d6){
@@ -2093,9 +2093,9 @@ G5ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("2MG-EA",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),
                        round(B81111[1],4)," "," "," "," ",round(B81111[2],4)," "," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -2142,7 +2142,7 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   a1<-a1^2;a2<-a2^2
   sigma5[2]<-(sigma+0.75*a2)/m_nf;sigma5[4]<-(sigma+0.75*a1)/m_nf
   sigma5[5]<-(sigma+0.75*(a1+a2))/m_nf;sigma5[6]<-sigma5[4]
-  sigma5[7]<-sigma/m_nf;sigma5[8]<-sigma5[2];sigma5[9]<-sigma/m_nf	 
+  sigma5[7]<-sigma/m_nf;sigma5[8]<-sigma5[2];sigma5[9]<-sigma/m_nf
   mi4<-mix_pi4[c(1:4)];mi5<-mix_pi5[c(1:9)]
   L0<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
     sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
@@ -2247,10 +2247,10 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B911-AA))
       AA<-B911
       if (n_iter>20) break
-    }  
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d4) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d4) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[10]<-sum(swx24)+ss1+ss2+ss3+(swx25[1]+swx25[3]+swx25[7]+swx25[9])*m_nf
     n0[10]<-nn[1]+nn[2]+nn[3]+nn[4]+(mi5[1]+mi5[3]+mi5[7]+mi5[9])*nn[5]
     n0[11]<-(mi5[2]+mi5[8])*nn[5];n0[12]<-(mi5[4]+mi5[6])*nn[5]
@@ -2273,12 +2273,12 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       ab4<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma5[c(1,3,7,9)]<-sigma/m_nf;sigma5[2]<-(sigma+g_aa1)/m_nf
     sigma5[4]<-(sigma+g_aa2)/m_nf;sigma5[5]<-(sigma+g_aa3)/m_nf
     sigma5[6]<-sigma5[4];sigma5[8]<-sigma5[2]
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -2291,14 +2291,14 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[3],m4[2],m4[3],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8]))
   B91111<-solve(crossprod(hh9,hh9))%*%crossprod(hh9,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -2350,7 +2350,7 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d4)
   for(i in 1:d4){
@@ -2371,7 +2371,7 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -2391,9 +2391,9 @@ G5ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("2MG-CD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," ",round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," ",round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B91111[1],4)," "," "," "," ",round(B91111[2],4),round(B91111[3],4)," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -2432,7 +2432,7 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   hh10<-matrix(c(1,1,1,1,1,1,1,2,-2,0,1.5,1,0,-0.5),7,2)
   mm<-as.matrix(c(m[1],m[3],m4[2],m5[2],m5[3],m5[4],m5[5]))
   B10<-solve(crossprod(hh10,hh10))%*%crossprod(hh10,mm)
-  a1<-B10[2]	   
+  a1<-B10[2]
   a1<-a1^2
   sigma5[2]<-(sigma+0.75*a1)/m_nf;sigma5[3]<-(sigma+1.5*a1)/m_nf
   sigma5[4]<-sigma/m_nf;sigma5[5]<-(sigma+0.75*a1)/m_nf;sigma5[6]<-sigma/m_nf
@@ -2501,7 +2501,7 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
           hh[i,j]<-hh[j,i]
         }
       }
-      #################################################################### 
+      ####################################################################
       b_line[1]<-s0[1]/n0[1]+s0[2]/n0[2]-2*s0[3]/n0[3]
       b_line[2]<-3*s0[1]/n0[1]+s0[2]/n0[2]-4*s0[5]/n0[5]
       b_line[3]<-3*s0[1]/n0[1]+s0[3]/n0[3]-4*s0[4]/n0[4]
@@ -2516,13 +2516,32 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       m5[5]<-(s0[6]+sigma5[5]*4*B1011[4])/n0[6]
       m[2]<-m[1];m4[1]<-m[1];m5[1]<-m[1]
       m4[3]<-m[3];m5[6]<-m[3];m5[4]<-m4[2]
+
+
+
+      # m[1]<-(sumx[1]-sigma*(B1011[1]+3*B1011[2]+3*B1011[3]))/nn[1]
+      # m[3]<-(sumx[3]-sigma*(B1011[1]+B1011[2]+B1011[4]))/nn[3]
+      # m4[2]<-(sumwx4[2]+sigma*(2*B1011[1]-B1011[3]-3*B1011[4]))/mi4[2]*nn[4]
+      #
+      #  m5[2]<-(s0[4]+sigma5[2]*4*B1011[3])/n0[4]
+      #  m5[3]<-(s0[5]+sigma5[3]*4*B1011[2])/n0[5]
+      #  m5[5]<-(s0[6]+sigma5[5]*4*B1011[4])/n0[6]
+      #  m[2] <- (sumx[2]-sigma*(B1011[1]+3*B1011[2]+3*B1011[3]))/nn[2]
+      #  m4[1] <- (sumwx4[1]-sigma*(B1011[1]+3*B1011[2]+3*B1011[3]))/mi4[1]*nn[4]
+      #  m5[1] <- (m_nf*sumwx5[1]-sigma*(B1011[1]+3*B1011[2]+3*B1011[3]))/m_nf*mi5[1]*nn[5]
+      #
+      #  m4[3] <- (sumwx4[3]-sigma*(B1011[1]+B1011[2]+B1011[4]))/mi4[3]*nn[4]
+      #  m5[6] <- (m_nf*sumwx5[6]-sigma*(B1011[1]+B1011[2]+B1011[4]))/m_nf*mi5[6]*nn[5]
+      #
+      #  m5[4] <- (m_nf*sumwx5[4]+sigma*(2*B1011[1]-B1011[3]-3*B1011[4]))/m_nf*mi5[4]*nn[5]
+
       aa1<-max(abs(B1011-AA))
       AA<-B1011
       if (n_iter>20) break
-    }  
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ; for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ; for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     s0[7]<-ss1+ss2+ss3+swx24[1]+swx24[2]+swx24[3]+m_nf*(swx25[1]+swx25[4]+swx25[6])
     n0[7]<-nn[1]+nn[2]+nn[3]+nn[4]+(mi5[1]+mi5[4]+mi5[6])*nn[5]
     n0[8]<-(mi5[2]+mi5[5])*nn[5];n0[9]<-mi5[3]*nn[5]
@@ -2541,12 +2560,12 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa4<-abs(sigma-aaa0)
       aaa0<-sigma
       if (ab5>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma5[1]<-sigma/m_nf;sigma5[2]<-(sigma+g_aa1)/m_nf
     sigma5[3]<-(sigma+g_aa2)/m_nf;sigma5[4]<-sigma/m_nf
     sigma5[5]<-sigma5[2];sigma5[6]<-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -2559,14 +2578,14 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[3],m4[2],m5[2],m5[3],m5[4],m5[5]))
   B101111<-solve(crossprod(hh10,hh10))%*%crossprod(hh10,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2jj<-sigmaF2-sigma
   if(F2jj<0){F2jj<-0}
   F2ll<-F2jj/sigmaF2
   F3jj<-sigmaF3-sigma/m_nf
   if(F3jj<0) {F3jj<-0}
-  F3ll<-F3jj/sigmaF3   
-  #####################################hypothesis testing for P1########################################  
+  F3ll<-F3jj/sigmaF3
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -2618,7 +2637,7 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -2639,7 +2658,7 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d6)
   for(i in 1:d6){
@@ -2659,9 +2678,9 @@ G5ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("2MG-EAD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),
                        round(B101111[1],4)," "," "," "," ",round(B101111[2],4)," "," "," "," "," "," "," "," "," ",round(F2jj,4),round(F2ll*100,4)," "," ",round(F3jj,4),round(F3ll*100,4)," "," ",
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -2690,7 +2709,7 @@ G5ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   mi4<-1;mi5<-1
   L0<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
     sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dnorm(dataF2,m[4],sqrt(sigma40))))+
-    sum(log(dnorm(dataF3,m[5],sqrt(sigma50)))) 
+    sum(log(dnorm(dataF3,m[5],sqrt(sigma50))))
   ########################################################
   ##########iteration process###########
   ############E-step###################
@@ -2719,7 +2738,7 @@ G5ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma40<-sigma4[1]-sigma;sigma50<-sigma5[1]-sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dnorm(dataF2,m[4],sqrt(sigma4))))+
       sum(log(dnorm(dataF3,m[5],sqrt(sigma5))))
@@ -2731,14 +2750,14 @@ G5ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   AIC<--2*abc+2*10
   #######first order parameters############
   ma1<-m[1];ma2<-m[2];ma3<-m[3];ma4<-m[4];ma5<-m[5]
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_gg <- sigmaF2-sigma
   if(F2_gg<0) {F2_gg<-0}
   F2_rr <- F2_gg/sigmaF2
   F3_gg <- sigmaF3-sigma/m_nf
   if(F3_gg<0) {F3_gg<-0}
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -2823,9 +2842,9 @@ G5ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D<-as.numeric(ks.test(F3bmw,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3w),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("PG-ADI",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(m[4],4)," "," "," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(mi4,4)," "," "," "," "," "," "," "," ",round(m[5],4)," "," "," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," "," "," ",round(mi5,4)," "," "," "," "," "," "," "," ",round(sigma,4),          
+                       round(mi4,4)," "," "," "," "," "," "," "," ",round(m[5],4)," "," "," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," "," "," ",round(mi5,4)," "," "," "," "," "," "," "," ",round(sigma,4),
                        round(ma1,4),round(ma2,4),round(ma3,4),round(ma4,4),round(ma5,4)," "," "," "," "," "," "," "," "," "," "," "," ",round(F2_gg,4),round(F2_rr*100,4)," "," ",round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -2854,7 +2873,7 @@ G5ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   mi4<-1;mi5<-1
   L0<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
     sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dnorm(dataF2,m[4],sqrt(sigma40))))+
-    sum(log(dnorm(dataF3,m[5],sqrt(sigma50)))) 
+    sum(log(dnorm(dataF3,m[5],sqrt(sigma50))))
   ########################################################
   ##########iteration process###########
   ############E-step###################
@@ -2906,7 +2925,7 @@ G5ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma40<-sigma_4+sigma;sigma50<-sigma_5+sigma/m_nf
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dnorm(dataF2,m[4],sqrt(sigma40))))+
       sum(log(dnorm(dataF3,m[5],sqrt(sigma50))))
@@ -2919,14 +2938,14 @@ G5ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   hh11<-matrix(c(1,1,1,1,1,1,0,-1,0,0,0,1,0,0.5,0.25),5,3)
   B11<-solve(crossprod(hh11,hh11))%*%crossprod(hh11,m)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_gg <- sigmaF2-sigma
   if(F2_gg<0) {F2_gg<-0}
   F2_rr <- F2_gg/sigmaF2
   F3_gg <- sigmaF3-sigma/m_nf
   if(F3_gg<0) {F3_gg<-0}
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -3011,9 +3030,9 @@ G5ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D<-as.numeric(ks.test(F3bmw,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3w),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("PG-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(m[4],4)," "," "," "," "," "," "," "," ",round(sigma40,4),
-                       round(mi4,4)," "," "," "," "," "," "," "," ",round(m[5],4)," "," "," "," "," "," "," "," ",round(sigma50,4)," "," "," "," "," "," "," "," ",round(mi5,4)," "," "," "," "," "," "," "," ",round(sigma,4),          
+                       round(mi4,4)," "," "," "," "," "," "," "," ",round(m[5],4)," "," "," "," "," "," "," "," ",round(sigma50,4)," "," "," "," "," "," "," "," ",round(mi5,4)," "," "," "," "," "," "," "," ",round(sigma,4),
                        round(B11[1],4)," "," "," "," "," "," "," "," "," "," "," "," ",round(B11[2],4),round(B11[3],4)," "," ",round(F2_gg,4),round(F2_rr*100,4)," "," ",round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -3086,10 +3105,10 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     s0[2]<-2*sumwx4[2]/n0[2]-2*sumwx4[3]/n0[3]+sumwx5[1]/n0[4]-4*sumwx5[2]/n0[5]+3*sumwx5[3]/n0[6]
     n_iter<-0;aaa1<-1000;AA<-matrix(0,2,1)
     while(aaa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-      B121<-solve(crossprod(hh12,hh12))%*%crossprod(hh12,mm) 
+      B121<-solve(crossprod(hh12,hh12))%*%crossprod(hh12,mm)
       aa1<-B121[6];aa2<-B121[7];aa1<-(0.5*aa1^2+0.25*aa2^2)/m_nf
       sigma5[2]<-sigma5[1]+aa1
       abc1<-sigma4[1]/n0[1]+sigma4[3]/n0[3]+sigma5[1]/n0[4]+sigma5[3]/n0[6]
@@ -3111,14 +3130,14 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     ########obtain variance#######################
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     sigma4[1]<-(swx24[1]+swx24[2]+swx24[3])/nn[4]
     sigma40<-sigma4[1]-sigma;
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[1]<-sigma40+sigma;sigma4[2]<-sigma4[1];sigma4[3]<-sigma4[1]
     aaa0<-sigma5[1]
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-    B1211<-solve(crossprod(hh12,hh12))%*%crossprod(hh12,mm) 
+    B1211<-solve(crossprod(hh12,hh12))%*%crossprod(hh12,mm)
     aa1<-B1211[6];aa2<-B1211[7];aa1<-(0.5*aa1^2+0.25*aa2^2)/m_nf
     n_iter<-0;aa3<-1000
     while (aa3>0.0001){
@@ -3144,14 +3163,14 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma<-aa4/aa5
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     aa4<-0.5*sigma0
     if (sigma<aa4) {sigma<-aa4}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1]
     sigma4[3]<-sigma4[1];sigma5[1]<-sigma/m_nf+sigma50
     sigma5[3]<-sigma5[1];sigma5[2]<-sigma/m_nf+sigma50+aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -3161,10 +3180,10 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*10
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-  B12111<-solve(crossprod(hh12,hh12))%*%crossprod(hh12,mm)     
-  ########second order genetic parameters###############   
+  B12111<-solve(crossprod(hh12,hh12))%*%crossprod(hh12,mm)
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -3177,7 +3196,7 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -3229,7 +3248,7 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -3250,7 +3269,7 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -3270,9 +3289,9 @@ G5ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX1-AD-ADI",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B12111[1],4),round(B12111[2],4),round(B12111[3],4),round(B12111[4],4),round(B12111[5],4),round(B12111[6],4)," ",round(B12111[7],4)," "," "," "," "," "," "," ",round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -3343,10 +3362,10 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     sumwx5 <- W5%*%dataF3
     aaa0<-0;aaa1<-1000;n_iter<-0;AA<-matrix(0,4,1)
     while(aaa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-      B131<-solve(crossprod(hh13,hh13))%*%crossprod(hh13,mm) 
+      B131<-solve(crossprod(hh13,hh13))%*%crossprod(hh13,mm)
       aa1<-B131[2];aa2<-B131[3];aa1<-(0.5*aa1^2+0.25*aa2^2)/m_nf
       sigma5[2]<-sigma5[1]+aa1
       ############restrictions######################
@@ -3389,13 +3408,13 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     ########obtain variance#######################
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     sigma4[1]<-(swx24[1]+swx24[2]+swx24[3])/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[1]<-sigma40+sigma;sigma4[2]<-sigma4[1];sigma4[3]<-sigma4[1]
     aaa0<-sigma5[1]
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-    B13111<-solve(crossprod(hh13,hh13))%*%crossprod(hh13,mm) 
+    B13111<-solve(crossprod(hh13,hh13))%*%crossprod(hh13,mm)
     aa1<-B13111[2];aa2<-B13111[3];aa1<-(0.5*aa1^2+0.25*aa2^2)/m_nf
     n_iter<-0;aa3<-1000
     while (aa3>0.0001)
@@ -3406,7 +3425,7 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
       if (n_iter>20) break
-    } 
+    }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]-sigma/m_nf}
     sigma5[1]<-sigma50+sigma/m_nf;sigma5[2]<-sigma5[1]+aa1
@@ -3428,11 +3447,11 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1];sigma4[3]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[3]<-sigma5[1];sigma5[2]<-sigma/m_nf+sigma50+aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -3442,10 +3461,10 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*8
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-  B131111<-solve(crossprod(hh13,hh13))%*%crossprod(hh13,mm)     
-  ########second order genetic parameters###############   
+  B131111<-solve(crossprod(hh13,hh13))%*%crossprod(hh13,mm)
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -3458,7 +3477,7 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -3510,7 +3529,7 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -3531,7 +3550,7 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -3551,9 +3570,9 @@ G5ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX1-AD-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B131111[1],4)," "," "," "," ",round(B131111[2],4)," ",round(B131111[3],4)," "," "," "," "," ",round(B131111[4],4),round(B131111[5],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -3621,10 +3640,10 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     sumwx5 <- W5%*%dataF3
     aaa0<-0;aaa1<-1000; n_iter<-0;AA<-matrix(0,5,1)
     while(aaa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-      B141<-solve(crossprod(hh14,hh14))%*%crossprod(hh14,mm) 
+      B141<-solve(crossprod(hh14,hh14))%*%crossprod(hh14,mm)
       aa1<-B141[2];aa1<-(0.5*aa1^2)/m_nf
       sigma5[2]<-sigma5[1]+aa1
       ############restrictions######################
@@ -3673,14 +3692,14 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     ########obtain variance#######################
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     sigma4[1]<-(swx24[1]+swx24[2]+swx24[3])/nn[4]
     sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[1]<-sigma40+sigma;sigma4[2]<-sigma4[1];sigma4[3]<-sigma4[1]
     aaa0<-sigma5[1]
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-    B14111<-solve(crossprod(hh14,hh14))%*%crossprod(hh14,mm) 
+    B14111<-solve(crossprod(hh14,hh14))%*%crossprod(hh14,mm)
     aa1<-B14111[2];aa1<-(0.5*aa1^2)/m_nf
     n_iter<-0;aa3<-1000
     while (aa3>0.0001)
@@ -3691,7 +3710,7 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
       if (n_iter>20) break
-    } 
+    }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]-sigma/m_nf}
     sigma5[1]<-sigma50+sigma/m_nf;sigma5[2]<-sigma5[1]+aa1;sigma5[3]<-sigma5[1]
@@ -3711,11 +3730,11 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1];sigma4[3]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[3]<-sigma5[1];sigma5[2]<-sigma/m_nf+sigma50+aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -3725,10 +3744,10 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*7
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3]))
-  B141111<-solve(crossprod(hh14,hh14))%*%crossprod(hh14,mm)     
-  ########second order genetic parameters###############   
+  B141111<-solve(crossprod(hh14,hh14))%*%crossprod(hh14,mm)
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -3741,7 +3760,7 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -3793,7 +3812,7 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -3814,7 +3833,7 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -3834,9 +3853,9 @@ G5ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX1-A-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B141111[1],4)," "," "," "," ",round(B141111[2],4)," "," "," "," "," "," "," ",round(B141111[3],4),round(B141111[4],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -3904,10 +3923,10 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     aaa0<-0
     aaa1<-1000;n_iter<-0;AA<-matrix(0,4,1)
     while(aaa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m5[1],m5[2],m5[3]))
-      B151<-solve(crossprod(hh15,hh15))%*%crossprod(hh15,mm) 
+      B151<-solve(crossprod(hh15,hh15))%*%crossprod(hh15,mm)
       aa1<-B151[2]
       aa1<-(0.75*aa1^2)/m_nf
       sigma5[2]<-sigma5[1]+aa1
@@ -3950,12 +3969,12 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     ########obtain variance#######################
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     sigma4[1]<-(swx24[1]+swx24[2])/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1]
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m5[1],m5[2],m5[3]))
-    B15111<-solve(crossprod(hh15,hh15))%*%crossprod(hh15,mm) 
+    B15111<-solve(crossprod(hh15,hh15))%*%crossprod(hh15,mm)
     aa1<-B15111[2];aa1<-(0.75*aa1^2)/m_nf
     aaa0<-sigma5[1];n_iter<-0
     aa3<-1000
@@ -3967,7 +3986,7 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
       if (n_iter>20) break
-    } 
+    }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[2]<-sigma5[1]+aa1;sigma5[3]<-sigma5[1]
@@ -3985,11 +4004,11 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1];sigma5[1]<-sigma/m_nf+sigma50
     sigma5[3]<-sigma5[1];sigma5[2]<-sigma5[1]+aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -3999,10 +4018,10 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*7
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m5[1],m5[2],m5[3]))
-  B151111<-solve(crossprod(hh15,hh15))%*%crossprod(hh15,mm)     
-  ########second order genetic parameters###############   
+  B151111<-solve(crossprod(hh15,hh15))%*%crossprod(hh15,mm)
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -4015,7 +4034,7 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -4067,7 +4086,7 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d2)
   for(i in 1:d2){
@@ -4088,7 +4107,7 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -4108,9 +4127,9 @@ G5ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX1-EAD-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B151111[1],4)," "," "," "," ",round(B151111[2],4)," "," "," "," "," "," "," ",round(B151111[3],4),round(B151111[4],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -4180,10 +4199,10 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     aaa0<-0
     aaa1<-1000;n_iter<-0;AA<-matrix(0,4,1)
     while(aaa1>0.0001){
-      n_iter<-n_iter+1 
+      n_iter<-n_iter+1
       ########first order genetic parameters###############
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m5[1],m5[2],m5[3]))
-      B161<-solve(crossprod(hh16,hh16))%*%crossprod(hh16,mm) 
+      B161<-solve(crossprod(hh16,hh16))%*%crossprod(hh16,mm)
       aa1<-B161[2];aa1<-(0.75*aa1^2)/m_nf
       sigma5[2]<-sigma5[1]+aa1
       ############restrictions######################
@@ -4225,13 +4244,13 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     }
     ########obtain variance#######################
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }      
+    for(i in 1:d2) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d1) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     sigma4[1]<-(swx24[1]+swx24[2])/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1]
     aaa0<-sigma5[1]
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m5[1],m5[2],m5[3]))
-    B16111<-solve(crossprod(hh16,hh16))%*%crossprod(hh16,mm) 
+    B16111<-solve(crossprod(hh16,hh16))%*%crossprod(hh16,mm)
     aa1<-B16111[2];aa1<-(0.75*aa1^2)/m_nf
     n_iter<-0;aa3<-1000
     while (aa3>0.0001)
@@ -4242,7 +4261,7 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
       if (n_iter>20) break
-    } 
+    }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]-sigma/m_nf}
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[2]<-sigma5[1]+aa1;sigma5[3]<-sigma5[1];
@@ -4261,11 +4280,11 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aa3<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[2]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[3]<-sigma5[1];sigma5[2]<-sigma5[1]+aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -4275,10 +4294,10 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   }
   abc<-L0
   AIC<--2*abc+2*7
-  ########first order genetic parameters###############  
+  ########first order genetic parameters###############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m5[1],m5[2],m5[3]))
-  B161111<-solve(crossprod(hh16,hh16))%*%crossprod(hh16,mm)     
-  ########second order genetic parameters###############   
+  B161111<-solve(crossprod(hh16,hh16))%*%crossprod(hh16,mm)
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -4291,7 +4310,7 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -4343,7 +4362,7 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d2)
   for(i in 1:d2){
@@ -4364,7 +4383,7 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d1)
   for(i in 1:d1){
@@ -4384,9 +4403,9 @@ G5ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX1-NCD-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," "," ",round(t(m5),4)," "," "," "," "," "," ",round(t(sigma5),4)," "," "," "," "," "," ",round(t(mi5),4)," "," "," "," "," "," ",round(sigma,4),
                        round(B161111[1],4)," "," "," "," ",round(B161111[2],4)," "," "," "," "," "," "," ",round(B161111[3],4),round(B161111[4],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -4434,13 +4453,13 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
                  0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0.25,0,0,0,0),21,13)
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B17<-solve(crossprod(hh17,hh17))%*%crossprod(hh17,mm)
-  g_aa1<-(0.5*(B17[7]+B17[10])^2+0.25*(B17[9]+B17[11])^2)/m_nf            
+  g_aa1<-(0.5*(B17[7]+B17[10])^2+0.25*(B17[9]+B17[11])^2)/m_nf
   #   0.5(db+i)**2+0.25(hb+jab)**2.
-  g_aa2<-(0.5*(B17[6]+B17[10])^2+0.25*(B17[8]+B17[12])^2)/m_nf        
+  g_aa2<-(0.5*(B17[6]+B17[10])^2+0.25*(B17[8]+B17[12])^2)/m_nf
   #   0.5(da+i)**2+0.25(ha+jba)**2.
-  g_aa3<-(0.5*(B17[6]-B17[10])^2+0.25*(B17[8]-B17[12])^2)/m_nf          
+  g_aa3<-(0.5*(B17[6]-B17[10])^2+0.25*(B17[8]-B17[12])^2)/m_nf
   #   0.5(da-i)**2+0.25(ha-jba)**2.
-  g_aa4<-(0.5*(B17[7]-B17[10])^2+0.25*(B17[9]-B17[11])^2)/m_nf           
+  g_aa4<-(0.5*(B17[7]-B17[10])^2+0.25*(B17[9]-B17[11])^2)/m_nf
   #   0.5(db-i)**2+0.25(hb-jab)**2.
   g_aa5<-0.25*(B17[6]^2+B17[7]^2+B17[10]^2+(B17[6]+B17[11])^2+(B17[7]+B17[12])^2+(B17[8]+B17[13]/2)^2+(B17[9]+B17[13]/2)^2+B17[13]^2/4)/m_nf
   sigma4[c(2:9)]<-sigma4[1];sigma5[c(3,7,9)]<-sigma5[1]
@@ -4477,13 +4496,13 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       ##########first order parameters###################
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
       B171<-solve(crossprod(hh17,hh17))%*%crossprod(hh17,mm)
-      g_aa1<-(0.5*(B171[7]+B171[10])^2+0.25*(B171[9]+B171[11])^2)/m_nf            
+      g_aa1<-(0.5*(B171[7]+B171[10])^2+0.25*(B171[9]+B171[11])^2)/m_nf
       #   0.5(db+i)**2+0.25(hb+jab)**2.
-      g_aa2<-(0.5*(B171[6]+B171[10])^2+0.25*(B171[8]+B171[12])^2)/m_nf        
+      g_aa2<-(0.5*(B171[6]+B171[10])^2+0.25*(B171[8]+B171[12])^2)/m_nf
       #   0.5(da+i)**2+0.25(ha+jba)**2.
-      g_aa3<-(0.5*(B171[6]-B171[10])^2+0.25*(B171[8]-B171[12])^2)/m_nf          
+      g_aa3<-(0.5*(B171[6]-B171[10])^2+0.25*(B171[8]-B171[12])^2)/m_nf
       #   0.5(da-i)**2+0.25(ha-jba)**2.
-      g_aa4<-(0.5*(B171[7]-B171[10])^2+0.25*(B171[9]-B171[11])^2)/m_nf           
+      g_aa4<-(0.5*(B171[7]-B171[10])^2+0.25*(B171[9]-B171[11])^2)/m_nf
       #   0.5(db-i)**2+0.25(hb-jab)**2.
       g_aa5<-0.25*(B171[6]^2+B171[7]^2+B171[10]^2+(B171[6]+B171[11])^2+(B171[7]+B171[12])^2+(B171[8]+B171[13]/2)^2+(B171[9]+B171[13]/2)^2+B171[13]^2/4)/m_nf
       sigma4[c(2:9)]<-sigma4[1];sigma5[c(3,7,9)]<-sigma5[1]
@@ -4566,23 +4585,23 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B1711-AA))
       AA<-B1711
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24);sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[c(2:9)]<-sigma4[1];aaa0<-sigma5[1]
     ab2<-swx25[1]+swx25[3]+swx25[7]+swx25[9];ab3<-n0[10]+n0[12]+n0[16]+n0[18]
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
     B17111<-solve(crossprod(hh17,hh17))%*%crossprod(hh17,mm)
-    g_aa1<-(0.5*(B17111[7]+B17111[10])^2+0.25*(B17111[9]+B17111[11])^2)/m_nf            
+    g_aa1<-(0.5*(B17111[7]+B17111[10])^2+0.25*(B17111[9]+B17111[11])^2)/m_nf
     #   0.5(db+i)**2+0.25(hb+jab)**2.
-    g_aa2<-(0.5*(B17111[6]+B17111[10])^2+0.25*(B17111[8]+B17111[12])^2)/m_nf        
+    g_aa2<-(0.5*(B17111[6]+B17111[10])^2+0.25*(B17111[8]+B17111[12])^2)/m_nf
     #   0.5(da+i)**2+0.25(ha+jba)**2.
-    g_aa3<-(0.5*(B17111[6]-B17111[10])^2+0.25*(B17111[8]-B17111[12])^2)/m_nf          
+    g_aa3<-(0.5*(B17111[6]-B17111[10])^2+0.25*(B17111[8]-B17111[12])^2)/m_nf
     #   0.5(da-i)**2+0.25(ha-jba)**2.
-    g_aa4<-(0.5*(B17111[7]-B17111[10])^2+0.25*(B17111[9]-B17111[11])^2)/m_nf           
+    g_aa4<-(0.5*(B17111[7]-B17111[10])^2+0.25*(B17111[9]-B17111[11])^2)/m_nf
     #   0.5(db-i)**2+0.25(hb-jab)**2.
     g_aa5<-0.25*(B17111[6]^2+B17111[7]^2+B17111[10]^2+(B17111[6]+B17111[11])^2+(B17111[7]+B17111[12])^2+(B17111[8]+B17111[13]/2)^2+(B17111[9]+B17111[13]/2)^2+B17111[13]^2/4)/m_nf
     n_iter<-0;aaa1<-1000
@@ -4596,7 +4615,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma5[1]<-as3/as4
       aaa1<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
@@ -4606,7 +4625,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     ab2<-ss1+ss2+ss3;ab3<-nn[1]+nn[2]+nn[3]
     n_iter<-0;aaa0<-sigma;aaa1<-1000
     while (aaa1>0.0001){
-      n_iter<-n_iter+1  
+      n_iter<-n_iter+1
       ab4<-sigma/(sigma40+sigma)
       s0[1]<-(sigma/m_nf)/(sigma/m_nf+sigma50);s0[2]<-(sigma/m_nf)/(sigma/m_nf+sigma50+g_aa1)
       s0[3]<-(sigma/m_nf)/(sigma/m_nf+sigma50);s0[4]<-(sigma/m_nf)/(sigma/m_nf+sigma50+g_aa2)
@@ -4627,7 +4646,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     sigma5[2]<-sigma5[1]+g_aa1;sigma5[4]<-sigma5[1]+g_aa2
     sigma5[5]<-sigma5[1]+g_aa5;sigma5[6]<-sigma5[1]+g_aa3
     sigma5[8]<-sigma5[1]+g_aa4
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -4640,7 +4659,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B171111<-solve(crossprod(hh17,hh17))%*%crossprod(hh17,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -4653,7 +4672,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -4705,7 +4724,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -4726,7 +4745,7 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -4746,9 +4765,9 @@ G5ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-ADI-ADI",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B171111[1],4),round(B171111[2],4),round(B171111[3],4),round(B171111[4],4),round(B171111[5],4),round(B171111[6],4),round(B171111[7],4),round(B171111[8],4),round(B171111[9],4),round(B171111[10],4),round(B171111[11],4),round(B171111[12],4),round(B171111[13],4)," "," ",round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -4794,13 +4813,13 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
                  0,1,0,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25),21,11)
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B18<-solve(crossprod(hh18,hh18))%*%crossprod(hh18,mm)
-  g_aa1<-(0.5*(B18[3]+B18[6])^2+0.25*(B18[5]+B18[7])^2)/m_nf         
+  g_aa1<-(0.5*(B18[3]+B18[6])^2+0.25*(B18[5]+B18[7])^2)/m_nf
   #   0.5(db+i)**2+0.25(hb+jab)**2.
-  g_aa2<-(0.5*(B18[2]+B18[6])^2+0.25*(B18[4]+B18[8])^2)/m_nf           
+  g_aa2<-(0.5*(B18[2]+B18[6])^2+0.25*(B18[4]+B18[8])^2)/m_nf
   #   0.5(da+i)**2+0.25(ha+jba)**2.
-  g_aa3<-(0.5*(B18[2]-B18[6])^2+0.25*(B18[4]-B18[8])^2)/m_nf     
+  g_aa3<-(0.5*(B18[2]-B18[6])^2+0.25*(B18[4]-B18[8])^2)/m_nf
   #   0.5(da-i)**2+0.25(ha-jba)**2.
-  g_aa4<-(0.5*(B18[3]-B18[6])^2+0.25*(B18[5]-B18[7])^2)/m_nf        
+  g_aa4<-(0.5*(B18[3]-B18[6])^2+0.25*(B18[5]-B18[7])^2)/m_nf
   #   0.5(db-i)**2+0.25(hb-jab)**2.
   g_aa5<-0.25*(B18[2]^2+B18[3]^2+B18[6]^2+(B18[2]+B18[7])^2+(B18[3]+B18[8])^2+(B18[4]+B18[9]/2)^2+(B18[5]+B18[9]/2)^2+B18[9]^2/4)/m_nf
   sigma4[c(2:9)]<-sigma4[1];sigma5[c(3,7,9)]<-sigma5[1]
@@ -4838,13 +4857,13 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],
                       m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
       B181<-solve(crossprod(hh18,hh18))%*%crossprod(hh18,mm)
-      g_aa1<-(0.5*(B181[3]+B181[6])^2+0.25*(B181[5]+B181[7])^2)/m_nf         
+      g_aa1<-(0.5*(B181[3]+B181[6])^2+0.25*(B181[5]+B181[7])^2)/m_nf
       #   0.5(db+i)**2+0.25(hb+jab)**2.
-      g_aa2<-(0.5*(B181[2]+B181[6])^2+0.25*(B181[4]+B181[8])^2)/m_nf           
+      g_aa2<-(0.5*(B181[2]+B181[6])^2+0.25*(B181[4]+B181[8])^2)/m_nf
       #   0.5(da+i)**2+0.25(ha+jba)**2.
-      g_aa3<-(0.5*(B181[2]-B181[6])^2+0.25*(B181[4]-B181[8])^2)/m_nf     
+      g_aa3<-(0.5*(B181[2]-B181[6])^2+0.25*(B181[4]-B181[8])^2)/m_nf
       #   0.5(da-i)**2+0.25(ha-jba)**2.
-      g_aa4<-(0.5*(B181[3]-B181[6])^2+0.25*(B181[5]-B181[7])^2)/m_nf        
+      g_aa4<-(0.5*(B181[3]-B181[6])^2+0.25*(B181[5]-B181[7])^2)/m_nf
       #   0.5(db-i)**2+0.25(hb-jab)**2.
       g_aa5<-0.25*(B181[2]^2+B181[3]^2+B181[6]^2+(B181[2]+B181[7])^2+(B181[3]+B181[8])^2+(B181[4]+B181[9]/2)^2+(B181[5]+B181[9]/2)^2+B181[9]^2/4)/m_nf
       sigma4[c(2:9)]<-sigma4[1];sigma5[c(3,7,9)]<-sigma5[1]
@@ -4898,7 +4917,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       hh[6,9]<-sigma4[1]/n0[1]-sigma4[3]/n0[3]+sigma4[7]/n0[7]-sigma4[9]/n0[9]
       hh[6,10]<--sigma4[1]/n0[1]-sigma4[3]/n0[3]-sigma4[7]/n0[7]-sigma4[9]/n0[9]+16*sigma5[2]/n0[11]+16*sigma5[8]/n0[17]
       hh[7,7]<-sigma4[2]/n0[2]+sigma4[4]/n0[4]+sigma4[6]/n0[6]+sigma4[8]/n0[8]+4*sigma5[2]/n0[11]+4*sigma5[4]/n0[13]+4*sigma5[6]/n0[15]+4*sigma5[8]/n0[17]
-      hh[7,8]<-2*sigma4[2]/n0[2]-2*sigma4[8]/n0[8]+8*sigma5[2]/n0[11]-8*sigma5[8]/n0[17] 
+      hh[7,8]<-2*sigma4[2]/n0[2]-2*sigma4[8]/n0[8]+8*sigma5[2]/n0[11]-8*sigma5[8]/n0[17]
       hh[7,9]<--2*sigma4[4]/n0[4]+2*sigma4[6]/n0[6]-8*sigma5[4]/n0[13]+8*sigma5[6]/n0[15]
       hh[7,10]<--8*sigma5[2]/n0[11]+8*sigma5[4]/n0[13]+8*sigma5[6]/n0[15]-8*sigma5[8]/n0[17]
       hh[8,8]<-sigma4[1]/n0[1]+4*sigma4[2]/n0[2]+sigma4[3]/n0[3]+sigma4[7]/n0[7]+4*sigma4[8]/n0[8]+sigma4[9]/n0[9]+16*sigma5[2]/n0[11]+16*sigma5[8]/n0[17]
@@ -4951,10 +4970,10 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B1811-AA))
       AA<-B1811
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24);sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[c(2:9)]<-sigma4[1];aaa0<-sigma5[1]
@@ -4963,13 +4982,13 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],
                     m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
     B18111<-solve(crossprod(hh18,hh18))%*%crossprod(hh18,mm)
-    g_aa1<-(0.5*(B18111[3]+B18111[6])^2+0.25*(B18111[5]+B18111[7])^2)/m_nf         
+    g_aa1<-(0.5*(B18111[3]+B18111[6])^2+0.25*(B18111[5]+B18111[7])^2)/m_nf
     #   0.5(db+i)**2+0.25(hb+jab)**2.
-    g_aa2<-(0.5*(B18111[2]+B18111[6])^2+0.25*(B18111[4]+B18111[8])^2)/m_nf           
+    g_aa2<-(0.5*(B18111[2]+B18111[6])^2+0.25*(B18111[4]+B18111[8])^2)/m_nf
     #   0.5(da+i)**2+0.25(ha+jba)**2.
-    g_aa3<-(0.5*(B18111[2]-B18111[6])^2+0.25*(B18111[4]-B18111[8])^2)/m_nf     
+    g_aa3<-(0.5*(B18111[2]-B18111[6])^2+0.25*(B18111[4]-B18111[8])^2)/m_nf
     #   0.5(da-i)**2+0.25(ha-jba)**2.
-    g_aa4<-(0.5*(B18111[3]-B18111[6])^2+0.25*(B18111[5]-B18111[7])^2)/m_nf        
+    g_aa4<-(0.5*(B18111[3]-B18111[6])^2+0.25*(B18111[5]-B18111[7])^2)/m_nf
     #   0.5(db-i)**2+0.25(hb-jab)**2.
     g_aa5<-0.25*(B18111[2]^2+B18111[3]^2+B18111[6]^2+(B18111[2]+B18111[7])^2+(B18111[3]+B18111[8])^2+(B18111[4]+B18111[9]/2)^2+(B18111[5]+B18111[9]/2)^2+B18111[9]^2/4)/m_nf
     while (aaa1>0.0001){
@@ -4982,7 +5001,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma5[1]<-as3/as4
       aaa1<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
@@ -4994,7 +5013,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     n_iter<-0;aaa0<-sigma
     aaa1<-1000
     while (aaa1>0.0001){
-      n_iter<-n_iter+1  
+      n_iter<-n_iter+1
       ab4<-sigma/(sigma40+sigma)
       s0[1]<-(sigma/m_nf)/(sigma/m_nf+sigma50)
       s0[2]<-(sigma/m_nf)/(sigma/m_nf+sigma50+g_aa1)
@@ -5013,14 +5032,14 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa0<-sigma
       if (n_iter>20) break
     }
-    
+
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[c(2:9)]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[c(3,7,9)]<-sigma5[1]
     sigma5[2]<-sigma5[1]+g_aa1;sigma5[4]<-sigma5[1]+g_aa2
     sigma5[5]<-sigma5[1]+g_aa5;sigma5[6]<-sigma5[1]+g_aa3
     sigma5[8]<-sigma5[1]+g_aa4
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -5033,7 +5052,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B181111<-solve(crossprod(hh18,hh18))%*%crossprod(hh18,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -5046,7 +5065,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -5098,7 +5117,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -5119,7 +5138,7 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -5139,9 +5158,9 @@ G5ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-ADI-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B181111[1],4)," "," "," "," ",round(B181111[2],4),round(B181111[3],4),round(B181111[4],4),round(B181111[5],4),round(B181111[6],4),round(B181111[7],4),round(B181111[8],4),round(B181111[9],4),round(B181111[10],4),round(B181111[11],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -5374,10 +5393,10 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B1911-AA))
       AA<-B1911
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24)
     sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
@@ -5400,7 +5419,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma5[1]<-as3/as4
       aaa1<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
@@ -5413,7 +5432,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     an1<-sigma40;an2<-sigma50
     aaa1<-1000
     while (aaa1>0.01){
-      n_iter<-n_iter+1  
+      n_iter<-n_iter+1
       if (an1<0) {an1<-0};if (an2<0) {an2<-0}
       ab4<-sigma/(sigma40+sigma)
       s0[1]<-(sigma/m_nf)/(sigma/m_nf+an2)
@@ -5439,7 +5458,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     sigma5[2]<-sigma5[1]+g_aa1;sigma5[4]<-sigma5[1]+g_aa2
     sigma5[5]<-sigma5[1]+g_aa3;sigma5[6]<-sigma5[1]+g_aa2
     sigma5[8]<-sigma5[1]+g_aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -5452,7 +5471,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B191111<-solve(crossprod(hh19,hh19))%*%crossprod(hh19,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -5465,7 +5484,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -5517,7 +5536,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -5538,7 +5557,7 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -5558,9 +5577,9 @@ G5ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-AD-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B191111[1],4)," "," "," "," ",round(B191111[2],4),round(B191111[3],4),round(B191111[4],4),round(B191111[5],4)," "," "," "," ",round(B191111[6],4),round(B191111[7],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -5587,10 +5606,10 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   ###############procedure start###########################
   mix_pi4<-as.matrix(c(0.0625,0.125,0.0625,0.1250,0.250,0.125,0.0625,0.125,0.0625))
   mix_pi5<-as.matrix(c(0.0625,0.125,0.0625,0.1250,0.250,0.125,0.0625,0.125,0.0625))
-  a1<-sqrt(sigma400/m_sam[4])
+  a1<-sqrt(sigma400)
   if (m[1]<m[3]) a1<--a1
   m4<-as.matrix(c(m[1],m[4]+2*a1,m[4]+1.2*a1,m[4]+0.6*a1,m[2],m[4]-0.6*a1,m[4]-1.2*a1,m[4]-2*a1,m[3]))
-  a1<-sqrt(sigma500/m_sam[5])
+  a1<-sqrt(sigma500)
   if (m[1]<m[3]) {a1<--a1}
   m5<-as.matrix(c(m[1],m[5]+2*a1,m[5]+1.2*a1,m[5]+0.6*a1,m[2],m[5]-0.6*a1,m[5]-1.2*a1,m[5]-2*a1,m[3]))
   nn<-m_sam
@@ -5796,10 +5815,10 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B2011-AA))
       AA<-B2011
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d3) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24);sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma};sigma4[c(2:9)]<-sigma4[1]
     aaa0<-sigma5[1]
@@ -5818,7 +5837,7 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma5[1]<-as3/as4
       aaa1<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
@@ -5829,7 +5848,7 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
     n_iter<-0;aaa0<-sigma;an1<-sigma40;an2<-sigma50
     aaa1<-1000
     while (aaa1>0.01){
-      n_iter<-n_iter+1  
+      n_iter<-n_iter+1
       if (an1<0) {an1<-0};if (an2<0) {an2<-0}
       ab4<-sigma/(an1+sigma)
       s0[1]<-(sigma/m_nf)/(sigma/m_nf+an2)
@@ -5849,14 +5868,14 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa0<-sigma
       if (n_iter>20) break
     }
-    
+
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[c(2:9)]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[c(3,7,9)]<-sigma5[1]
     sigma5[2]<-sigma5[1]+g_aa1;sigma5[4]<-sigma5[1]+g_aa2
     sigma5[5]<-sigma5[1]+g_aa3;sigma5[6]<-sigma5[1]+g_aa2
     sigma5[8]<-sigma5[1]+g_aa1
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -5869,7 +5888,7 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5],m4[6],m4[7],m4[8],m4[9],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B201111<-solve(crossprod(hh20,hh20))%*%crossprod(hh20,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -5882,7 +5901,7 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -5934,7 +5953,7 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d3)
   for(i in 1:d3){
@@ -5955,7 +5974,7 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -5975,9 +5994,9 @@ G5ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-A-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4),round(sigma4[1],4),
-                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4),round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B201111[1],4)," "," "," "," ",round(B201111[2],4),round(B201111[3],4)," "," "," "," "," "," ",round(B201111[4],4),round(B201111[5],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -6138,10 +6157,10 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B2111-AA))
       AA<-B2111
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d5) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d5) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24);sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma}
     sigma4[c(2:5)]<-sigma4[1];aaa0<-sigma5[1]
@@ -6162,7 +6181,7 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
       if (n_iter>20) break
-    } 
+    }
     sigma50<-sigma5[1]-sigma/m_nf;
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
     sigma5[2]<-sigma5[1]+aa12;sigma5[3]<-sigma5[1]
@@ -6186,13 +6205,13 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[c(2:5)]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[2]<-sigma5[1]+aa12
     sigma5[3]<-sigma5[1];sigma5[4]<-sigma5[1]+2*aa12
     sigma5[5]<-sigma5[1]+aa12;sigma5[6]<-sigma5[1]
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -6205,7 +6224,7 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m4[5], m5[1],m5[2],m5[3],m5[5],m5[6]))
   B211111<-solve(crossprod(hh21,hh21))%*%crossprod(hh21,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -6218,7 +6237,7 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -6270,7 +6289,7 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d5)
   for(i in 1:d5){
@@ -6291,7 +6310,7 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d6)
   for(i in 1:d6){
@@ -6311,9 +6330,9 @@ G5ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-EA-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),
                        round(B211111[1],4)," "," "," "," ",round(B211111[2],4)," "," "," "," "," "," "," ",round(B211111[3],4),round(B211111[4],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -6502,10 +6521,10 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B2211-AA))
       AA<-B2211
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d4) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d4) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d3) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24);sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma};sigma4[c(2:4)]<-sigma4[1]
     aaa0<-sigma5[1]
@@ -6530,7 +6549,7 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-abs(sigma5[1]-aaa0)
       aaa0<-sigma5[1]
       if (n_iter>20) break
-    } 
+    }
     sigma50<-sigma5[1]-sigma/m_nf;
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
     sigma5[c(3,7,9)]<-sigma5[1]
@@ -6560,13 +6579,13 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[c(2:4)]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[c(3,7,9)]<-sigma5[1]
     sigma5[2]<-sigma5[1]+g_aa1;sigma5[4]<-sigma5[1]+g_aa2;sigma5[5]<-sigma5[1]+g_aa3
     sigma5[6]<-sigma5[4];sigma5[8]<-sigma5[2]
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -6579,7 +6598,7 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m4[4],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6],m5[7],m5[8],m5[9]))
   B221111<-solve(crossprod(hh22,hh22))%*%crossprod(hh22,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -6592,7 +6611,7 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -6644,7 +6663,7 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d4)
   for(i in 1:d4){
@@ -6665,7 +6684,7 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d3)
   for(i in 1:d3){
@@ -6685,9 +6704,9 @@ G5ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-CD-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," ",round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," ",round(t(m5),4),round(t(sigma5),4),round(t(mi5),4),round(sigma,4),
                        round(B221111[1],4)," "," "," "," ",round(B221111[2],4),round(B221111[3],4)," "," "," "," "," "," ",round(B221111[4],4),round(B221111[5],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -6812,7 +6831,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
           hh[i,j]<-hh[j,i]
         }
       }
-      ##################################################################### 
+      #####################################################################
       b_line[1]<-sumx[1]/nn[1]+2*sumx[2]/nn[2]+sumx[3]/nn[3]-3*sumwx4[1]/n0[1]-sumwx4[3]/n0[3]
       b_line[2]<-sumx[2]/nn[2]-2*sumwx4[1]/n0[1]-sumwx4[3]/n0[3]+sumwx5[1]/n0[4]+sumwx5[6]/n0[9]
       b_line[3]<-sumwx4[1]/n0[1]-sumwx4[2]/n0[2]-sumwx5[1]/n0[4]+sumwx5[4]/n0[7]
@@ -6838,10 +6857,10 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-max(abs(B2311-AA))
       AA<-B2311
       if (n_iter>20) break
-    } 
+    }
     ##########obtain variance###############
     ss1<-sum((dataP1-m[1])^2);ss3<-sum((dataP2-m[3])^2);ss2<-sum((dataF1-m[2])^2)
-    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 } 
+    for(i in 1:d1) {swx24[i] <- W4[i,]%*%(dataF2-m4[i])^2 } ;for(i in 1:d6) {swx25[i] <- W5[i,]%*%(dataF3-m5[i])^2 }
     ab1<-sum(swx24);sigma4[1]<-ab1/nn[4];sigma40<-sigma4[1]-sigma
     if (sigma40<0) {sigma40<-0;sigma4[1]<-sigma};sigma4[c(2:3)]<-sigma4[1];aaa0<-sigma5[1]
     n_iter<-0
@@ -6860,7 +6879,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       sigma5[1]<-as3/as4;
       aaa1<-abs(sigma5[1]-aaa0);
       aaa0<-sigma5[1];
-      if (n_iter>20) break 
+      if (n_iter>20) break
     }
     sigma50<-sigma5[1]-sigma/m_nf
     if (sigma50<0) {sigma50<-0;sigma5[1]<-sigma/m_nf}
@@ -6885,13 +6904,13 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
       aaa1<-abs(sigma-aaa0)
       aaa0<-sigma
       if (n_iter>20) break
-    } 
+    }
     if (sigma<sigma0) {sigma<-sigma0}
     sigma4[1]<-sigma+sigma40;sigma4[c(2,3)]<-sigma4[1]
     sigma5[1]<-sigma/m_nf+sigma50;sigma5[2]<-sigma5[1]+g_aa1
     sigma5[3]<-sigma5[1]+g_aa2;sigma5[4]<-sigma5[1]
     sigma5[5]<-sigma5[1]+g_aa1;sigma5[6]<-sigma5[1]
-    ##############################criteria for iterations to stop######################## 
+    ##############################criteria for iterations to stop########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma))))+sum(log(dmixnorm(dataF2,m4,sqrt(sigma4),mi4)))+
       sum(log(dmixnorm(dataF3,m5,sqrt(sigma5),mi5)))
@@ -6904,7 +6923,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   #######first order parameters############
   mm<-as.matrix(c(m[1],m[2],m[3],m4[1],m4[2],m4[3],m5[1],m5[2],m5[3],m5[4],m5[5],m5[6]))
   B231111<-solve(crossprod(hh23,hh23))%*%crossprod(hh23,mm)
-  ########second order genetic parameters###############   
+  ########second order genetic parameters###############
   F2_jj <- sigmaF2 - sigma4[1]
   F2_gg <- sigma4[1]-sigma
   if(F2_jj<0) {F2_jj<-0}
@@ -6917,7 +6936,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   if(F3_gg<0 || F3_gg>sigmaF3) {F3_gg<-0}
   F3_ll <- F3_jj/sigmaF3
   F3_rr <- F3_gg/sigmaF3
-  #####################################hypothesis testing for P1########################################  
+  #####################################hypothesis testing for P1########################################
   dataP1<-sort(dataP1)
   P1w1<-1/(12*m_sam[1])
   P1bmw <- matrix(0,m_sam[1],1)
@@ -6969,7 +6988,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F2#########################################
-  dataF2 <- sort(dataF2); 
+  dataF2 <- sort(dataF2);
   F2w1<-1/(12*m_sam[4])
   F2bmw <- matrix(0,m_sam[4],1); F2bmwsl <- matrix(0,m_sam[4],d1)
   for(i in 1:d1){
@@ -6990,7 +7009,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F2tt <- as.matrix(c((1 - pchisq(F2u[1],1)),(1 - pchisq(F2u[2],1)),(1 - pchisq(F2u[3],1)),K1(F2WW2),(1-pkolm(F2D,m_sam[4]))))
   F2tt[which( F2tt>=10e-4)]<-round(F2tt[which(F2tt>=10e-4)],4);F2tt[which(F2tt<10e-4)]<-format(F2tt[which(F2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F3#########################################
-  dataF3 <- sort(dataF3); 
+  dataF3 <- sort(dataF3);
   F3w1<-1/(12*m_sam[5])
   F3bmw <- matrix(0,m_sam[5],1); F3bmwsl <- matrix(0,m_sam[5],d6)
   for(i in 1:d6){
@@ -7010,9 +7029,9 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
   F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[5]))))
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
-  
+
   output <- data.frame("MX2-EAD-AD",round(abc,4),round(AIC,4),round(m[1],4),round(m[2],4),round(m[3],4), round(t(m4),4)," "," "," "," "," "," ",round(sigma4[1],4),
-                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),          
+                       round(t(mi4),4)," "," "," "," "," "," ",round(t(m5),4)," "," "," ",round(t(sigma5),4)," "," "," ",round(t(mi5),4)," "," "," ",round(sigma,4),
                        round(B231111[1],4)," "," "," "," ",round(B231111[2],4)," "," "," "," "," "," "," ",round(B231111[3],4),round(B231111[4],4),round(F2_jj,4),round(F2_ll*100,4),round(F2_gg,4),round(F2_rr*100,4),round(F3_jj,4),round(F3_ll*100,4),round(F3_gg,4),round(F3_rr*100,4),
                        round(P1u[1],4),P1tt[1],round(P1u[2],4),P1tt[2],round(P1u[3],4),P1tt[3],round(P1w,4),P1tt[4],round(P1D,4),P1tt[5],
                        round(F1u[1],4),F1tt[1],round(F1u[2],4),F1tt[2],round(F1u[3],4),F1tt[3],round(F1w,4),F1tt[4],round(F1D,4),F1tt[5],
@@ -7022,7 +7041,7 @@ G5ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,df51,G5text2){
  output<-as.matrix(output)
   OUTPUT<-list(output,mix_pi4,mix_pi5)
   return(OUTPUT)
-  
+
 }
 
 
@@ -7036,9 +7055,9 @@ K1G5 <- function(x){
   V0 <- V0 + (gamma(j+0.5)*sqrt(4*j+1)/(gamma(0.5)*gamma(j+1)))*exp(-(4*j+1)^2/(16*x))*(I1-I2)}
   V <- (1/sqrt(2*x))*V0
   return (1-V)
-} 
+}
 
-logLG5 <- function(nm,nng,mi,mn,s,d1) { sum2 <- sum(log(dmixnorm(d1,mn,sqrt(s),mi)));return (sum2) } 
+logLG5 <- function(nm,nng,mi,mn,s,d1) { sum2 <- sum(log(dmixnorm(d1,mn,sqrt(s),mi)));return (sum2) }
 
 
 if(model=="All models"){
@@ -7065,28 +7084,28 @@ stopCluster(cl)
 mix_pi4<-NULL;mix_pi5<-NULL
 
 }else{
-  
+
   allresultq=switch(model,"1MG-AD" = G5ModelFun[[1]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"1MG-A"=G5ModelFun[[2]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"1MG-EAD"=G5ModelFun[[3]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"1MG-NCD"=G5ModelFun[[4]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"2MG-ADI"=G5ModelFun[[5]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),
                     "2MG-AD"=G5ModelFun[[6]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"2MG-A"=G5ModelFun[[7]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"2MG-EA"=G5ModelFun[[8]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"2MG-CD"=G5ModelFun[[9]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"2MG-EAD"=G5ModelFun[[10]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),
                     "PG-ADI"=G5ModelFun[[11]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"PG-AD"=G5ModelFun[[12]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX1-AD-ADI"=G5ModelFun[[13]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX1-AD-AD"=G5ModelFun[[14]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX1-A-AD"=G5ModelFun[[15]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),
                     "MX1-EAD-AD"=G5ModelFun[[16]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX1-NCD-AD"=G5ModelFun[[17]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX2-ADI-ADI"=G5ModelFun[[18]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX2-ADI-AD"=G5ModelFun[[19]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX2-AD-AD"=G5ModelFun[[20]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),
                     "MX2-A-AD"=G5ModelFun[[21]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX2-EA-AD"=G5ModelFun[[22]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX2-CD-AD"=G5ModelFun[[23]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2),"MX2-EAD-AD"=G5ModelFun[[24]](K1G5,logLG5,df11,df21,df31,df41,df51,G5text2))
-  
-  
+
+
   allresult<-allresultq[[1]]
   if(model=="PG-AD"||model=="PG-ADI"){
     mix_pi4<-NULL;mix_pi5<-NULL
   }else{
-    mix_pi4<-allresultq[[2]];mix_pi5<-allresultq[[3]] 
+    mix_pi4<-allresultq[[2]];mix_pi5<-allresultq[[3]]
   }
 }
 colnames(allresult) <- G5colname
 out<-list(allresult,mix_pi4,mix_pi5)
 return(out)
-} 
+}
 
-  
-  
-  
-  
-  
+
+
+
+
+

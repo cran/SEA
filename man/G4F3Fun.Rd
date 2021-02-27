@@ -2,7 +2,7 @@
 \alias{G4F3Fun}
 \title{segregation analysis of G4F3 population}
 \description{
-Phenotypic observations in G4F3 population have often been used to identify mixed major-gene plus polygenes inheritance model for quantitative traits in plants.}
+Phenotypic observations in G4F3 population have often been used to identify mixed major-gene plus polygene inheritance model for quantitative traits in plants.}
 \usage{
 G4F3Fun(df,model,G4F3text2)
 }
@@ -12,7 +12,7 @@ G4F3Fun(df,model,G4F3text2)
 	\item{G4F3text2}{number of plants measured in each family.}
 	    }
 \author{
-Zhang Ya-Wen, Du Ying-wen,Ren Wen-long and Zhang Yuan-ming\cr
+Wang Jing-Tian, Zhang Ya-Wen, and Zhang Yuan-Ming \cr
 Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
 }
 \examples{

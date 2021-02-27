@@ -11,7 +11,7 @@ PosPro(Population,result,data)}
 	\item{data}{phenotype matrix.}
 	    }
 \author{
-Zhang Ya-Wen, Du Ying-wen,Ren Wen-long and Zhang Yuan-ming\cr
+Wang Jing-Tian, Zhang Ya-Wen, and Zhang Yuan-Ming \cr
 Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
 }
 \examples{

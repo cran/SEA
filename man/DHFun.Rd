@@ -2,7 +2,7 @@
 \alias{DHFun}
 \title{segregation analysis of DH population}
 \description{
-Phenotypic observations in DH population have often been used to identify mixed major-gene plus polygenes inheritance model for quantitative traits in plants.}
+Phenotypic observations in DH population have often been used to identify mixed major-gene plus polygene inheritance model for quantitative traits in plants.}
 \usage{
 DHFun(df,model)
 }
@@ -11,7 +11,7 @@ DHFun(df,model)
 	\item{model}{genetic model.}
         }
 \author{
-Zhang Ya-Wen, Du Ying-wen,Ren Wen-long and Zhang Yuan-ming\cr
+Wang Jing-Tian, Zhang Ya-Wen, and Zhang Yuan-Ming \cr
 Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
 }
 \examples{

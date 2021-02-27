@@ -19,5 +19,6 @@
  Dataset input of G6Fun function.
 }
 \author{
- Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
+Wang Jing-Tian, Zhang Ya-Wen, and Zhang Yuan-Ming \cr
+Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
 }

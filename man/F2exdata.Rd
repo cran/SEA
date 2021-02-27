@@ -14,5 +14,6 @@
  Dataset input of F2Fun function.
 }
 \author{
+ Wang Jing-Tian, Zhang Ya-Wen, and Zhang Yuan-Ming \cr
  Maintainer: Yuanming Zhang<soyzhang@mail.hzau.edu.cn>
 }
