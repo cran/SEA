@@ -116,6 +116,7 @@ G5BCFModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     sigma[1]<-sigma[6]<-sigma[11];sigma[2]<-sigma[1]+a1;sigma[5]<-sigma[2]
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)];mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -148,8 +149,10 @@ G5BCFModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -165,8 +168,10 @@ G5BCFModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -182,8 +187,10 @@ G5BCFModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -203,8 +210,10 @@ G5BCFModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -224,8 +233,10 @@ G5BCFModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("1MG-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -324,6 +335,7 @@ G5BCFModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     sigma[1]<-sigma[6]<-sigma[11];sigma[2]<-sigma[1]+a1;sigma[5]<-sigma[2]
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)];mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -356,8 +368,10 @@ G5BCFModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -373,8 +387,10 @@ G5BCFModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -390,8 +406,10 @@ G5BCFModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -411,8 +429,10 @@ G5BCFModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -432,8 +452,10 @@ G5BCFModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("1MG-A",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -534,6 +556,7 @@ G5BCFModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)]
     mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -566,8 +589,10 @@ G5BCFModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -583,8 +608,10 @@ G5BCFModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -600,8 +627,10 @@ G5BCFModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -621,8 +650,10 @@ G5BCFModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -642,8 +673,10 @@ G5BCFModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("1MG-EAD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -744,6 +777,7 @@ G5BCFModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)]
     mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -777,8 +811,10 @@ G5BCFModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
@@ -795,8 +831,10 @@ G5BCFModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -812,8 +850,10 @@ G5BCFModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -833,8 +873,10 @@ G5BCFModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -854,8 +896,10 @@ G5BCFModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("1MG-NCD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -999,6 +1043,7 @@ G5BCFModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:4)];ssigma1<-sigma[c(1:4)]
     mm2<-m[c(5:8)];ssigma2<-sigma[c(5:8)]
     mix_pi1<-mix_pi[c(1:4)];mix_pi2<-mix_pi[c(5:8)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop####################
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -1035,8 +1080,10 @@ G5BCFModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -1052,8 +1099,10 @@ G5BCFModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -1069,8 +1118,10 @@ G5BCFModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -1090,8 +1141,10 @@ G5BCFModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -1111,8 +1164,10 @@ G5BCFModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("2MG-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4),round(m[4],4),round(sigma[1],4),round(sigma[2],4),
@@ -1256,6 +1311,7 @@ G5BCFModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:4)];ssigma1<-sigma[c(1:4)]
     mm2<-m[c(5:8)];ssigma2<-sigma[c(5:8)]
     mix_pi1<-mix_pi[c(1:4)];mix_pi2<-mix_pi[c(5:8)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -1292,8 +1348,10 @@ G5BCFModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -1309,8 +1367,10 @@ G5BCFModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -1326,8 +1386,10 @@ G5BCFModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -1347,8 +1409,10 @@ G5BCFModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -1368,8 +1432,10 @@ G5BCFModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("2MG-A",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4),round(m[4],4),round(sigma[1],4),round(sigma[2],4),
@@ -1504,6 +1570,7 @@ G5BCFModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:3)];ssigma1<-sigma[c(1:3)]
     mm2<-m[c(5:7)];ssigma2<-sigma[c(5:7)]
     mix_pi1<-mix_pi[c(1:3)];mix_pi2<-mix_pi[c(5:7)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop############
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -1540,8 +1607,10 @@ G5BCFModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -1557,8 +1626,10 @@ G5BCFModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -1574,8 +1645,10 @@ G5BCFModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -1595,8 +1668,10 @@ G5BCFModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -1616,8 +1691,10 @@ G5BCFModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("2MG-EA",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4)," ",round(sigma[1],4),round(sigma[2],4),
@@ -1760,6 +1837,7 @@ G5BCFModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:4)];ssigma1<-sigma[c(1:4)]
     mm2<-m[c(5:8)];ssigma2<-sigma[c(5:8)]
     mix_pi1<-mix_pi[c(1:4)];mix_pi2<-mix_pi[c(5:8)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -1796,8 +1874,10 @@ G5BCFModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -1813,8 +1893,10 @@ G5BCFModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -1830,8 +1912,10 @@ G5BCFModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -1851,8 +1935,10 @@ G5BCFModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -1872,8 +1958,10 @@ G5BCFModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("2MG-CD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4),round(m[4],4),round(sigma[1],4),round(sigma[2],4),
@@ -2012,6 +2100,7 @@ G5BCFModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:3)];ssigma1<-sigma[c(1:3)]
     mm2<-m[c(5:7)];ssigma2<-sigma[c(5:7)]
     mix_pi1<-mix_pi[c(1:3)];mix_pi2<-mix_pi[c(5:7)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -2048,8 +2137,10 @@ G5BCFModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -2065,8 +2156,10 @@ G5BCFModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -2082,8 +2175,10 @@ G5BCFModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -2103,8 +2198,10 @@ G5BCFModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -2124,8 +2221,10 @@ G5BCFModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("2MG-EAD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4)," ",round(sigma[1],4),round(sigma[2],4),
@@ -2262,6 +2361,7 @@ G5BCFModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)]
     mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -2300,8 +2400,10 @@ G5BCFModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -2317,8 +2419,10 @@ G5BCFModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -2334,8 +2438,10 @@ G5BCFModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -2355,8 +2461,10 @@ G5BCFModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -2376,8 +2484,10 @@ G5BCFModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX1-AD-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -2522,6 +2632,7 @@ G5BCFModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)]
     mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -2560,8 +2671,10 @@ G5BCFModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -2577,8 +2690,10 @@ G5BCFModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -2594,8 +2709,10 @@ G5BCFModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -2615,8 +2732,10 @@ G5BCFModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -2636,8 +2755,10 @@ G5BCFModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX1-A-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -2782,6 +2903,7 @@ G5BCFModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)]
     mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -2820,8 +2942,10 @@ G5BCFModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -2837,8 +2961,10 @@ G5BCFModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -2854,8 +2980,10 @@ G5BCFModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -2875,8 +3003,10 @@ G5BCFModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -2896,8 +3026,10 @@ G5BCFModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX1-EAD-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -3048,6 +3180,7 @@ G5BCFModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1,2)];ssigma1<-sigma[c(1,2)]
     mm2<-m[c(5,6)];ssigma2<-sigma[c(5,6)]
     mix_pi1<-mix_pi[c(1,2)];mix_pi2<-mix_pi[c(5,6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop############
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -3086,8 +3219,10 @@ G5BCFModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -3103,8 +3238,10 @@ G5BCFModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -3120,8 +3257,10 @@ G5BCFModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -3141,8 +3280,10 @@ G5BCFModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -3162,8 +3303,10 @@ G5BCFModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX1-NCD-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4), round(m[1],4),round(m[2],4)," "," ",round(sigma[1],4),round(sigma[2],4),
@@ -3344,6 +3487,7 @@ G5BCFModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:4)];ssigma1<-sigma[c(1:4)]
     mm2<-m[c(5:8)];ssigma2<-sigma[c(5:8)]
     mix_pi1<-mix_pi[c(1:4)];mix_pi2<-mix_pi[c(5:8)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop###########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -3386,8 +3530,10 @@ G5BCFModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -3403,8 +3549,10 @@ G5BCFModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -3420,8 +3568,10 @@ G5BCFModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -3441,8 +3591,10 @@ G5BCFModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -3462,8 +3614,10 @@ G5BCFModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX2-AD-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4),round(m[4],4),round(sigma[1],4),round(sigma[2],4),
@@ -3655,6 +3809,7 @@ G5BCFModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:4)];ssigma1<-sigma[c(1:4)]
     mm2<-m[c(5:8)];ssigma2<-sigma[c(5:8)]
     mix_pi1<-mix_pi[c(1:4)];mix_pi2<-mix_pi[c(5:8)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -3697,8 +3852,10 @@ G5BCFModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -3714,8 +3871,10 @@ G5BCFModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -3731,8 +3890,10 @@ G5BCFModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -3752,8 +3913,10 @@ G5BCFModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -3773,8 +3936,10 @@ G5BCFModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX2-A-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4),round(m[4],4),round(sigma[1],4),round(sigma[2],4),
@@ -3949,6 +4114,7 @@ G5BCFModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:3)];ssigma1<-sigma[c(1:3)]
     mm2<-m[c(5:7)];ssigma2<-sigma[c(5:7)]
     mix_pi1<-mix_pi[c(1:3)];mix_pi2<-mix_pi[c(5:7)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -3991,8 +4157,10 @@ G5BCFModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -4008,8 +4176,10 @@ G5BCFModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -4025,8 +4195,10 @@ G5BCFModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -4046,8 +4218,10 @@ G5BCFModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -4067,8 +4241,10 @@ G5BCFModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX2-EA-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4)," ",round(sigma[1],4),round(sigma[2],4),
@@ -4301,8 +4477,10 @@ G5BCFModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -4318,8 +4496,10 @@ G5BCFModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -4335,8 +4515,10 @@ G5BCFModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -4356,8 +4538,10 @@ G5BCFModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -4377,8 +4561,10 @@ G5BCFModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX2-CD-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4),round(m[4],4),round(sigma[1],4),round(sigma[2],4),
@@ -4552,6 +4738,7 @@ G5BCFModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
     mm1<-m[c(1:3)];ssigma1<-sigma[c(1:3)]
     mm2<-m[c(5:7)];ssigma2<-sigma[c(5:7)]
     mix_pi1<-mix_pi[c(1:3)];mix_pi2<-mix_pi[c(5:7)]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop########
     L1<-sum(log(dnorm(dataP1,m[11],sqrt(sigma[11]))))+sum(log(dnorm(dataF1,m[12],sqrt(sigma[11]))))+
       sum(log(dnorm(dataP2,m[13],sqrt(sigma[11]))))+sum(log(dmixnorm(dataB1,mm1,sqrt(ssigma1),mix_pi1)))+
@@ -4594,8 +4781,10 @@ G5BCFModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:nn[1])) - 0.5)/nn[1])^2)
   P1u<- as.matrix(c(12*nn[1]*((P1dd[1]/nn[1]-0.5)^2),((45*nn[1])/4)*((P1dd[2]/nn[1]-1/3)^2),180*nn[1]*((P1dd[3]/nn[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,nn[1]))))
+
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for F1#########################################
   dataF1<-sort(dataF1)
@@ -4611,8 +4800,10 @@ G5BCFModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:nn[2])) - 0.5)/nn[2])^2)
   F1u<- as.matrix(c(12*nn[2]*((F1dd[1]/nn[2]-0.5)^2),((45*nn[2])/4)*((F1dd[2]/nn[2]-1/3)^2),180*nn[2]*((F1dd[3]/nn[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,nn[2]))))
+
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
   #################################hypothesis testing for P2#############################################
   dataP2<-sort(dataP2)
@@ -4628,8 +4819,10 @@ G5BCFModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:nn[3])) - 0.5)/nn[3])^2)
   P2u<- as.matrix(c(12*nn[3]*((P2dd[1]/nn[3]-0.5)^2),((45*nn[3])/4)*((P2dd[2]/nn[3]-1/3)^2),180*nn[3]*((P2dd[3]/nn[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,nn[3]))))
+
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B1#########################################
   dataB1 <- sort(dataB1);
@@ -4649,8 +4842,10 @@ G5BCFModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B1dd <- as.matrix(c(sum(B1P2),sum(B1P2^2),sum((B1P2-0.5)^2)))
   B1WW2 <- 1/(12*nn[4]) + sum((B1P2 - (as.matrix(c(1:nn[4])) - 0.5)/nn[4])^2)
   B1u <- as.matrix(c(12*nn[4]*((B1dd[1]/nn[4]-0.5)^2),((45*nn[4])/4)*((B1dd[2]/nn[4]-1/3)^2),180*nn[4]*((B1dd[3]/nn[4]-1/12)^2)))
+  B1D <- as.numeric(ks.test(B1P2,"punif")[2])
+  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),B1D))
   B1D <- as.numeric(ks.test(B1P2,"punif")[[1]][1])
-  B1tt <- as.matrix(c((1 - pchisq(B1u[1],1)),(1 - pchisq(B1u[2],1)),(1 - pchisq(B1u[3],1)),K1(B1WW2),(1-pkolm(B1D,nn[4]))))
+
   B1tt[which( B1tt>=10e-4)]<-round(B1tt[which(B1tt>=10e-4)],4);B1tt[which(B1tt<10e-4)]<-format(B1tt[which(B1tt<10e-4)],scientific=TRUE,digit=4)
   ####################################hypothesis testing for B2#########################################
   dataB2 <- sort(dataB2);
@@ -4670,8 +4865,10 @@ G5BCFModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,df51,G5BCFtext2){
   B2dd <- as.matrix(c(sum(B2P2),sum(B2P2^2),sum((B2P2-0.5)^2)))
   B2WW2 <- 1/(12*nn[5]) + sum((B2P2 - (as.matrix(c(1:nn[5])) - 0.5)/nn[5])^2)
   B2u <- as.matrix(c(12*nn[5]*((B2dd[1]/nn[5]-0.5)^2),((45*nn[5])/4)*((B2dd[2]/nn[5]-1/3)^2),180*nn[5]*((B2dd[3]/nn[5]-1/12)^2)))
+  B2D <- as.numeric(ks.test(B2P2,"punif")[2])
+  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),B2D))
   B2D <- as.numeric(ks.test(B2P2,"punif")[[1]][1])
-  B2tt <- as.matrix(c((1 - pchisq(B2u[1],1)),(1 - pchisq(B2u[2],1)),(1 - pchisq(B2u[3],1)),K1(B2WW2),(1-pkolm(B2D,nn[5]))))
+
   B2tt[which( B2tt>=10e-4)]<-round(B2tt[which(B2tt>=10e-4)],4);B2tt[which(B2tt<10e-4)]<-format(B2tt[which(B2tt<10e-4)],scientific=TRUE,digit=4)
 
   output <- data.frame("MX2-EAD-AD",round(abc,4),round(AIC,4),round(m[11],4),round(m[12],4),round(m[13],4),round(m[1],4),round(m[2],4),round(m[3],4)," ",round(sigma[1],4),round(sigma[2],4),
@@ -4721,7 +4918,6 @@ registerDoParallel(cl)
 i<-NULL
 allresult=foreach(i=1:18,.combine = 'rbind')%dopar%{
   requireNamespace("KScorrect")
-  requireNamespace("kolmim")
   G5BCFModelFun[[i]](K1G5BCF,logLG5BCF,df11,df21,df31,df41,df51,G5BCFtext2)[[1]]
 }
 stopCluster(cl)

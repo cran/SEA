@@ -47,8 +47,9 @@ BCModelFun[[1]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,1)
@@ -64,8 +65,9 @@ BCModelFun[[1]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -130,7 +132,8 @@ BCModelFun[[2]] <- function(K1,logL,df11,df21){
 
     sigma11<- matrix((sum(swx_B1)/n_samB1),d2,1)
     sigma22<- matrix((sum(swx_B2)/n_samB2),d2,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -172,8 +175,9 @@ BCModelFun[[2]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -190,8 +194,9 @@ BCModelFun[[2]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -260,7 +265,8 @@ BCModelFun[[3]] <- function(K1,logL,df11,df21){
 
     sigma11<- matrix((sum(swx_B1)/n_samB1),d2,1)
     sigma22<- matrix((sum(swx_B2)/n_samB2),d2,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -302,8 +308,9 @@ BCModelFun[[3]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -320,8 +327,9 @@ BCModelFun[[3]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -384,7 +392,8 @@ BCModelFun[[4]] <- function(K1,logL,df11,df21){
 
     sigma11<- sum(swx_B1)/n_samB1
     sigma22<- matrix((sum(swx_B2)/n_samB2),d22,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d21,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d22,mix_pi_2,mean22,sigma22,dataB2)
@@ -425,8 +434,9 @@ BCModelFun[[4]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d22)
@@ -443,8 +453,9 @@ BCModelFun[[4]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -506,6 +517,8 @@ BCModelFun[[5]] <- function(K1,logL,df11,df21){
 
     sigma11<- matrix((sum(swx_B1)/n_samB1),d21,1)
     sigma22<- sum(swx_B2)/n_samB2
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d21,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d22,mix_pi_2,mean22,sigma22,dataB2)
@@ -545,8 +558,9 @@ BCModelFun[[5]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d22)
@@ -563,8 +577,9 @@ BCModelFun[[5]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -640,7 +655,8 @@ BCModelFun[[6]] <- function(K1,logL,df11,df21){
 
     sigma11<- matrix((sum(swx_B1)/n_samB1),d2,1)
     sigma22<- matrix((sum(swx_B2)/n_samB2),d2,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -682,8 +698,9 @@ BCModelFun[[6]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -700,8 +717,9 @@ BCModelFun[[6]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -800,7 +818,8 @@ BCModelFun[[7]] <- function(K1,logL,df11,df21){
 
     sigma11<- matrix((sum(swx_B1)/n_samB1),d2,1)
     sigma22<- matrix((sum(swx_B2)/n_samB2),d2,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
 
@@ -840,8 +859,9 @@ BCModelFun[[7]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -858,8 +878,9 @@ BCModelFun[[7]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -949,6 +970,8 @@ BCModelFun[[8]] <- function(K1,logL,df11,df21){
 
     sigma11<- matrix((sum(swx_B1)/n_samB1),d2,1)
     sigma22<- matrix((sum(swx_B2)/n_samB2),d2,1)
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
 
@@ -987,8 +1010,9 @@ BCModelFun[[8]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -1005,8 +1029,9 @@ BCModelFun[[8]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1078,7 +1103,8 @@ BCModelFun[[9]] <- function(K1,logL,df11,df21){
 
     sigma11<- sum(swx_B1)/n_samB1
     sigma22<- matrix((sum(swx_B2)/n_samB2),d22,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d21,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d22,mix_pi_2,mean22,sigma22,dataB2)
@@ -1118,8 +1144,9 @@ BCModelFun[[9]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d22)
@@ -1136,8 +1163,9 @@ BCModelFun[[9]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1206,7 +1234,8 @@ BCModelFun[[10]] <- function(K1,logL,df11,df21){
 
     sigma11<- sum(swx_B1)/n_samB1
     sigma22<- matrix((sum(swx_B2)/n_samB2),d22,1)
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samB1,d21,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d22,mix_pi_2,mean22,sigma22,dataB2)
 
@@ -1245,8 +1274,9 @@ BCModelFun[[10]] <- function(K1,logL,df11,df21){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1))
   D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d22)
@@ -1263,8 +1293,9 @@ BCModelFun[[10]] <- function(K1,logL,df11,df21){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2))
   D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1310,7 +1341,6 @@ if(model=="All models"){
   i<-NULL
   allresult=foreach(i=1:10,.combine = 'rbind')%dopar%{
     requireNamespace("KScorrect")
-    requireNamespace("kolmim")
     BCModelFun[[i]](K1BC,logLBC,df11,df21)[[1]]
   }
   stopCluster(cl)

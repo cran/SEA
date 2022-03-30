@@ -82,6 +82,7 @@ G4F3ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1];sigma[4]<-sigma[1]/m_nf
     sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop####################
     pi<-m[c(4:6)];gh<-sigma[c(4:6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -110,8 +111,9 @@ G4F3ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -129,8 +131,9 @@ G4F3ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -148,8 +151,9 @@ G4F3ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -171,8 +175,9 @@ G4F3ModelFun[[1]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -250,6 +255,7 @@ G4F3ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1];sigma[4]<-sigma[1]/m_nf
     sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop####################
     pi<-m[c(4:6)];gh<-sigma[c(4:6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -278,8 +284,9 @@ G4F3ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -297,8 +304,9 @@ G4F3ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -316,8 +324,9 @@ G4F3ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -339,8 +348,9 @@ G4F3ModelFun[[2]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -418,6 +428,7 @@ G4F3ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1];sigma[4]<-sigma[1]/m_nf
     sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ################criteria for iterations to stop###################
     pi<-m[c(4:6)];gh<-sigma[c(4:6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -446,8 +457,9 @@ G4F3ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -465,8 +477,9 @@ G4F3ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -484,8 +497,9 @@ G4F3ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -507,8 +521,9 @@ G4F3ModelFun[[3]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -586,6 +601,7 @@ G4F3ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1];sigma[4]<-sigma[1]/m_nf
     sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ##############criteria for iterations to stop##############################
     pi<-m[c(4:6)];gh<-sigma[c(4:6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -614,8 +630,9 @@ G4F3ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -633,8 +650,9 @@ G4F3ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -652,8 +670,9 @@ G4F3ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -675,8 +694,9 @@ G4F3ModelFun[[4]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -714,8 +734,6 @@ G4F3ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   m[8]<-m[4];m[9]<-m[4]-0.8*a9;m[10]<-m[4]-1.6*a9
   m[11]<-m[4]-2.4*a9;m[12]<-m[4]-3.2*a9;m[4]<-m[4]+3.2*a9
   pi<-m[c(4:12)];gh<-sigma[c(4:12)]
-  m[4:12] <- c(128,134,80,126,102,117,114,91,90,90)
-  m[1:3] <- m[4:6]
   L0<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
     sum(log(dnorm(dataP2,m[3],sqrt(sigma[3]))))+sum(log(dmixnorm(dataF3,pi,sqrt(gh),mi)))
   ##########iteration process###########
@@ -773,6 +791,7 @@ G4F3ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+g_a
+    if(sum(sigma < 1e-30)>=1){break}
     #######################criteria for iterations to stop #############################
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -801,8 +820,9 @@ G4F3ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -820,8 +840,9 @@ G4F3ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -839,8 +860,9 @@ G4F3ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -862,8 +884,9 @@ G4F3ModelFun[[5]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -992,6 +1015,7 @@ G4F3ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+g_a
+    if(sum(sigma < 1e-30)>=1){break}
     ##############################criteria for iterations to stop########################
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -1020,8 +1044,9 @@ G4F3ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1039,8 +1064,9 @@ G4F3ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1058,8 +1084,9 @@ G4F3ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1081,8 +1108,9 @@ G4F3ModelFun[[6]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1218,6 +1246,7 @@ G4F3ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+g_a
+    if(sum(sigma < 1e-30)>=1){break}
     ####################criteria for iterations to stop############################
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -1246,8 +1275,9 @@ G4F3ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1265,8 +1295,9 @@ G4F3ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1284,8 +1315,9 @@ G4F3ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1307,8 +1339,9 @@ G4F3ModelFun[[7]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1416,6 +1449,7 @@ G4F3ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:9)]<-sigma[1]/m_nf+g_a
+    if(sum(sigma < 1e-30)>=1){break}
     ####################criteria for iterations to stop######################
     pi<-m[c(4:9)];gh<-sigma[c(4:9)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -1444,8 +1478,9 @@ G4F3ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1463,8 +1498,9 @@ G4F3ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1482,8 +1518,9 @@ G4F3ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1505,8 +1542,9 @@ G4F3ModelFun[[8]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1640,6 +1678,7 @@ G4F3ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+g_a
+    if(sum(sigma < 1e-30)>=1){break}
     ####################criteria for iterations to stop#######################
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -1668,8 +1707,9 @@ G4F3ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1687,8 +1727,9 @@ G4F3ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1706,8 +1747,9 @@ G4F3ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1729,8 +1771,9 @@ G4F3ModelFun[[9]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1844,6 +1887,7 @@ G4F3ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:9)]<-sigma[1]/m_nf+g_a
+    if(sum(sigma < 1e-30)>=1){break}
     ###############criteria for iterations to stop####################
     pi<-m[c(4:9)];gh<-sigma[c(4:9)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -1872,8 +1916,9 @@ G4F3ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1891,8 +1936,9 @@ G4F3ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1910,8 +1956,9 @@ G4F3ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1933,8 +1980,9 @@ G4F3ModelFun[[10]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1993,6 +2041,7 @@ G4F3ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[4]<-sigma[1]/m_nf+sigma40
+    if(sum(sigma < 1e-30)>=1){break}
     ###################criteria for iterations to stop#######################################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma[3]))))+ sum(log(dnorm(dataF3,m[4],sqrt(sigma[4]))))
@@ -2020,8 +2069,9 @@ G4F3ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2039,8 +2089,9 @@ G4F3ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2058,8 +2109,9 @@ G4F3ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2077,8 +2129,9 @@ G4F3ModelFun[[11]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd<-c((sum(F3bmw)),(sum(F3bmw^2)),sum((F3bmw-0.5)^2))
   F3w<-F3w1+sum((F3bmw - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u<- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D<-as.numeric(ks.test(F3bmw,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3w),F3D))
   F3D<-as.numeric(ks.test(F3bmw,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3w),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2142,6 +2195,7 @@ G4F3ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[4]<-sigma[1]/m_nf+sigma40
+    if(sum(sigma < 1e-30)>=1){break}
     #####################criteria for iterations to stop##########################
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
       sum(log(dnorm(dataP2,m[3],sqrt(sigma[3]))))+ sum(log(dnorm(dataF3,m[4],sqrt(sigma[4]))))
@@ -2171,8 +2225,9 @@ G4F3ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2190,8 +2245,9 @@ G4F3ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2209,8 +2265,9 @@ G4F3ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2228,8 +2285,9 @@ G4F3ModelFun[[12]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd<-c((sum(F3bmw)),(sum(F3bmw^2)),sum((F3bmw-0.5)^2))
   F3w<-F3w1+sum((F3bmw - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u<- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D<-as.numeric(ks.test(F3bmw,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3w),F3D))
   F3D<-as.numeric(ks.test(F3bmw,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3w),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2315,6 +2373,7 @@ G4F3ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1];sigma[4]<-sigma[1]/m_nf+sigma40
     sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     #######################criteria for iteration to stop##########################
     pi<-m[c(4,5,6)];gh<-sigma[c(4,5,6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -2349,8 +2408,9 @@ G4F3ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2368,8 +2428,9 @@ G4F3ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2387,8 +2448,9 @@ G4F3ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2410,8 +2472,9 @@ G4F3ModelFun[[13]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2503,6 +2566,7 @@ G4F3ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1];sigma[4]<-sigma[1]/m_nf+sigma40
     sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ###################criteria for iterations to stop#####################
     pi<-m[c(4,5,6)] ;gh<-sigma[c(4,5,6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -2537,8 +2601,9 @@ G4F3ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2556,8 +2621,9 @@ G4F3ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2575,8 +2641,9 @@ G4F3ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2598,8 +2665,9 @@ G4F3ModelFun[[14]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2699,6 +2767,7 @@ G4F3ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[4]<-sigma[1]/m_nf+sigma40;sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     #################criteria for iterations to stop#####################
     pi<-m[c(4,5,6)] ;gh<-sigma[c(4,5,6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -2733,8 +2802,9 @@ G4F3ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2752,8 +2822,9 @@ G4F3ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2771,8 +2842,9 @@ G4F3ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2794,8 +2866,9 @@ G4F3ModelFun[[15]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2895,6 +2968,7 @@ G4F3ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[4]<-sigma[1]/m_nf+sigma40;sigma[6]<-sigma[4];sigma[5]<-sigma[4]+g_a[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ##############criteria for iteration to stop###############################
     pi<-m[c(4,5,6)] ;gh<-sigma[c(4,5,6)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -2926,8 +3000,9 @@ G4F3ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2945,8 +3020,9 @@ G4F3ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2964,8 +3040,9 @@ G4F3ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -2987,8 +3064,9 @@ G4F3ModelFun[[16]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3118,8 +3196,9 @@ G4F3ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3137,8 +3216,9 @@ G4F3ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3156,8 +3236,9 @@ G4F3ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3179,8 +3260,9 @@ G4F3ModelFun[[17]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3284,6 +3366,7 @@ G4F3ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+sigma40+g_a[c(1:9)]
+    if(sum(sigma < 1e-30)>=1){break}
     ##############criteria for iterations to stop#############
     pi<-m[c(4:12)] ;gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+sum(log(dnorm(dataP2,m[3],sqrt(sigma[3]))))+sum(log(dmixnorm(dataF3,pi,sqrt(gh),mix_pi)))
@@ -3314,8 +3397,9 @@ G4F3ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3333,8 +3417,9 @@ G4F3ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3352,8 +3437,9 @@ G4F3ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3375,8 +3461,9 @@ G4F3ModelFun[[18]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3487,6 +3574,7 @@ G4F3ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
       if(n_iter>20) break
     }
     sigma[c(4:12)]<-sigma[1]/m_nf+sigma40+g_a[c(1:9)]
+    if(sum(sigma < 1e-30)>=1){break}
     ###############criteria for iterations to stop###################
     pi<-m[c(4:12)] ;gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -3518,8 +3606,9 @@ G4F3ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3537,8 +3626,9 @@ G4F3ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3556,8 +3646,9 @@ G4F3ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3579,8 +3670,9 @@ G4F3ModelFun[[19]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3724,6 +3816,7 @@ G4F3ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+sigma40+g_a[c(1:9)]
+    if(sum(sigma < 1e-30)>=1){break}
     ############criteria for iterations to stop###########
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -3755,8 +3848,9 @@ G4F3ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3774,8 +3868,9 @@ G4F3ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3793,8 +3888,9 @@ G4F3ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3816,8 +3912,9 @@ G4F3ModelFun[[20]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -3978,6 +4075,7 @@ G4F3ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+sigma40+g_a[c(1:9)]
+    if(sum(sigma < 1e-30)>=1){break}
     ##########criteria for iterations to stop####################
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -4009,8 +4107,9 @@ G4F3ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4028,8 +4127,9 @@ G4F3ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4047,8 +4147,9 @@ G4F3ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4070,8 +4171,9 @@ G4F3ModelFun[[21]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4205,6 +4307,7 @@ G4F3ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:9)]<-sigma[1]/m_nf+sigma40+g_a[c(1:6)]
+    if(sum(sigma < 1e-30)>=1){break}
     #############criteria for iterations to stop########
     pi<-m[c(4:9)];gh<-sigma[c(4:9)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -4236,8 +4339,9 @@ G4F3ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4255,8 +4359,9 @@ G4F3ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4274,8 +4379,9 @@ G4F3ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4297,8 +4403,9 @@ G4F3ModelFun[[22]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4457,6 +4564,7 @@ G4F3ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:12)]<-sigma[1]/m_nf+sigma40+g_a[c(1:9)]
+    if(sum(sigma < 1e-30)>=1){break}
     ############criteria for iterations to stop################
     pi<-m[c(4:12)];gh<-sigma[c(4:12)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -4488,8 +4596,9 @@ G4F3ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4507,8 +4616,9 @@ G4F3ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4526,8 +4636,9 @@ G4F3ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4549,8 +4660,9 @@ G4F3ModelFun[[23]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4687,6 +4799,7 @@ G4F3ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
     }
     sigma[2]<-sigma[3]<-sigma[1]
     sigma[c(4:9)]<-sigma[1]/m_nf+sigma40+g_a[c(1:6)]
+    if(sum(sigma < 1e-30)>=1){break}
     ###############criteria for iterations to stop#################
     pi<-m[c(4:9)];gh<-sigma[c(4:9)]
     L1<-sum(log(dnorm(dataP1,m[1],sqrt(sigma[1]))))+sum(log(dnorm(dataF1,m[2],sqrt(sigma[2]))))+
@@ -4718,8 +4831,9 @@ G4F3ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P1dd<-c((sum(P1bmw)),(sum(P1bmw^2)),sum((P1bmw-0.5)^2))
   P1w<-P1w1+sum((P1bmw - (as.matrix(c(1:m_sam[1])) - 0.5)/m_sam[1])^2)
   P1u<- as.matrix(c(12*m_sam[1]*((P1dd[1]/m_sam[1]-0.5)^2),((45*m_sam[1])/4)*((P1dd[2]/m_sam[1]-1/3)^2),180*m_sam[1]*((P1dd[3]/m_sam[1]-1/12)^2)))
+  P1D<-as.numeric(ks.test(P1bmw,"punif")[2])
+  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),P1D))
   P1D<-as.numeric(ks.test(P1bmw,"punif")[[1]][1])
-  P1tt <- as.matrix(c((1 - pchisq(P1u[1],1)),(1 - pchisq(P1u[2],1)),(1 - pchisq(P1u[3],1)),K1(P1w),(1-pkolm(P1D,m_sam[1]))))
 
   P1tt[which( P1tt>=10e-4)]<-round(P1tt[which(P1tt>=10e-4)],4);P1tt[which(P1tt<10e-4)]<-format(P1tt[which(P1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4737,8 +4851,9 @@ G4F3ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F1dd<-c((sum(F1bmw)),(sum(F1bmw^2)),sum((F1bmw-0.5)^2))
   F1w<-F1w1+sum((F1bmw - (as.matrix(c(1:m_sam[2])) - 0.5)/m_sam[2])^2)
   F1u<- as.matrix(c(12*m_sam[2]*((F1dd[1]/m_sam[2]-0.5)^2),((45*m_sam[2])/4)*((F1dd[2]/m_sam[2]-1/3)^2),180*m_sam[2]*((F1dd[3]/m_sam[2]-1/12)^2)))
+  F1D<-as.numeric(ks.test(F1bmw,"punif")[2])
+  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),F1D))
   F1D<-as.numeric(ks.test(F1bmw,"punif")[[1]][1])
-  F1tt <- as.matrix(c((1 - pchisq(F1u[1],1)),(1 - pchisq(F1u[2],1)),(1 - pchisq(F1u[3],1)),K1(F1w),(1-pkolm(F1D,m_sam[2]))))
 
   F1tt[which(F1tt>=10e-4)]<-round(F1tt[which(F1tt>=10e-4)],4);F1tt[which(F1tt<10e-4)]<-format(F1tt[which(F1tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4756,8 +4871,9 @@ G4F3ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   P2dd<-c((sum(P2bmw)),(sum(P2bmw^2)),sum((P2bmw-0.5)^2))
   P2w<-P2w1+sum((P2bmw - (as.matrix(c(1:m_sam[3])) - 0.5)/m_sam[3])^2)
   P2u<- as.matrix(c(12*m_sam[3]*((P2dd[1]/m_sam[3]-0.5)^2),((45*m_sam[3])/4)*((P2dd[2]/m_sam[3]-1/3)^2),180*m_sam[3]*((P2dd[3]/m_sam[3]-1/12)^2)))
+  P2D<-as.numeric(ks.test(P2bmw,"punif")[2])
+  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),P2D))
   P2D<-as.numeric(ks.test(P2bmw,"punif")[[1]][1])
-  P2tt <- as.matrix(c((1 - pchisq(P2u[1],1)),(1 - pchisq(P2u[2],1)),(1 - pchisq(P2u[3],1)),K1(P2w),(1-pkolm(P2D,m_sam[3]))))
 
   P2tt[which(P2tt>=10e-4)]<-round(P2tt[which(P2tt>=10e-4)],4);P2tt[which(P2tt<10e-4)]<-format(P2tt[which(P2tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4779,8 +4895,9 @@ G4F3ModelFun[[24]] <- function(K1,logL,df11,df21,df31,df41,G4F3text2){
   F3dd <- as.matrix(c(sum(F3P2),sum(F3P2^2),sum((F3P2-0.5)^2)))
   F3WW2 <- 1/(12*m_sam[4]) + sum((F3P2 - (as.matrix(c(1:m_sam[4])) - 0.5)/m_sam[4])^2)
   F3u <- as.matrix(c(12*m_sam[4]*((F3dd[1]/m_sam[4]-0.5)^2),((45*m_sam[4])/4)*((F3dd[2]/m_sam[4]-1/3)^2),180*m_sam[4]*((F3dd[3]/m_sam[4]-1/12)^2)))
+  F3D <- as.numeric(ks.test(F3P2,"punif")[2])
+  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),F3D))
   F3D <- as.numeric(ks.test(F3P2,"punif")[[1]][1])
-  F3tt <- as.matrix(c((1 - pchisq(F3u[1],1)),(1 - pchisq(F3u[2],1)),(1 - pchisq(F3u[3],1)),K1(F3WW2),(1-pkolm(F3D,m_sam[4]))))
 
   F3tt[which( F3tt>=10e-4)]<-round(F3tt[which(F3tt>=10e-4)],4);F3tt[which(F3tt<10e-4)]<-format(F3tt[which(F3tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -4829,7 +4946,6 @@ if(model=="All models"){
   i<-NULL
   allresult=foreach(i=1:24,.combine = 'rbind')%dopar%{
     requireNamespace("KScorrect")
-    requireNamespace("kolmim")
     G4F3ModelFun[[i]](K1G4F3,logLG4F3,df11,df21,df31,df41,G4F3text2)[[1]]
   }
   stopCluster(cl)

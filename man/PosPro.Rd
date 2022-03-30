@@ -7,7 +7,7 @@ calculate posterior probability of the optimal model}
 PosPro(Population,result,data)}
 \arguments{
 	\item{Population}{which Population to analysis.}
-	\item{result}{result of calculation used corresponding population    function.}
+	\item{result}{result of calculation used corresponding population function.}
 	\item{data}{phenotype matrix.}
 	    }
 \author{

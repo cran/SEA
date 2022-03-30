@@ -37,8 +37,9 @@ BILModelFun[[1]] <- function(K1,logL,df,BILfr){
   dd<-c((sum(bmw)),(sum(bmw^2)),sum((bmw-0.5)^2))
   w<-w1+sum((bmw - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u<- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D<-as.numeric(ks.test(bmw,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(w),D))
   D<-as.numeric(ks.test(bmw,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(w),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -83,6 +84,7 @@ BILModelFun[[2]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0[1]/mm
     sigma[2]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -113,8 +115,9 @@ BILModelFun[[2]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -159,6 +162,7 @@ BILModelFun[[3]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2,3,4)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -189,8 +193,9 @@ BILModelFun[[3]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -242,6 +247,7 @@ BILModelFun[[4]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2,3,4)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -272,8 +278,9 @@ BILModelFun[[4]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -324,6 +331,7 @@ BILModelFun[[5]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2,3)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -355,8 +363,9 @@ BILModelFun[[5]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -401,6 +410,7 @@ BILModelFun[[6]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2,3)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -431,8 +441,9 @@ BILModelFun[[6]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -477,6 +488,7 @@ BILModelFun[[7]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2,3)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -507,8 +519,9 @@ BILModelFun[[7]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -553,6 +566,7 @@ BILModelFun[[8]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2,3)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -583,8 +597,9 @@ BILModelFun[[8]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -629,6 +644,7 @@ BILModelFun[[9]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[2]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -659,8 +675,9 @@ BILModelFun[[9]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -706,6 +723,7 @@ BILModelFun[[10]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[2]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -736,8 +754,9 @@ BILModelFun[[10]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -775,6 +794,7 @@ BILModelFun[[11]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[2]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -805,8 +825,9 @@ BILModelFun[[11]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -851,6 +872,7 @@ BILModelFun[[12]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2:8)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -882,8 +904,9 @@ BILModelFun[[12]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -962,6 +985,7 @@ BILModelFun[[13]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2:8)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -992,8 +1016,9 @@ BILModelFun[[13]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -1052,6 +1077,7 @@ BILModelFun[[14]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2:4)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1082,8 +1108,9 @@ BILModelFun[[14]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -1154,6 +1181,7 @@ BILModelFun[[15]] <- function(K1,logL,df,BILfr){
     s0 <- sum(swx)
     sigma[1]<-s0/mm
     sigma[c(2:6)]<-sigma[1]
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(dataB,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1184,8 +1212,9 @@ BILModelFun[[15]] <- function(K1,logL,df,BILfr){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*mm) + sum((P2 - (as.matrix(c(1:mm)) - 0.5)/mm)^2)
   u <- as.matrix(c(12*mm*((dd[1]/mm-0.5)^2),((45*mm)/4)*((dd[2]/mm-1/3)^2),180*mm*((dd[3]/mm-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,mm))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)])
 
@@ -1229,7 +1258,6 @@ if(model=="All models"){
   i<-NULL
   allresult=foreach(i=1:15,.combine = 'rbind')%dopar%{
     requireNamespace("KScorrect")
-    requireNamespace("kolmim")
     BILModelFun[[i]](K1BIL,logLBIL,df,BILfr)[[1]]
   }
   stopCluster(cl)

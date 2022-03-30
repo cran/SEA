@@ -47,8 +47,8 @@ BCFModelFun[[1]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,1)
@@ -64,8 +64,8 @@ BCFModelFun[[1]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -73,8 +73,8 @@ BCFModelFun[[1]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("0MG",round(aBCF,4),round(AIC,4),round(t(mean11),4)," "," "," ",round(t(sigma11),4)," "," "," ",round(t(mix_pi_1),4)," "," "," ",
                        round(t(mean22),4)," "," "," ",round(t(sigma22),4)," "," "," ",round(t(mix_pi_2),4)," "," "," ",
                        " "," "," "," "," "," "," "," "," "," ",
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output)
   return(OUTPUT)
@@ -160,6 +160,8 @@ BCFModelFun[[2]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[2]+gg1
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
 
@@ -198,8 +200,8 @@ BCFModelFun[[2]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -216,8 +218,8 @@ BCFModelFun[[2]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -225,8 +227,8 @@ BCFModelFun[[2]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("1MG-AD",round(aBCF,4),round(AIC,4),round(t(mean11),4)," "," ",round(t(sigma11),4)," "," ",round(t(mix_pi_1),4)," "," ",
                        round(t(mean22),4)," "," ",round(t(sigma22),4)," "," ",round(t(mix_pi_2),4)," "," ",
                        round(B111[1],4),round(B111[2],4),round(B111[3],4)," ",round(B111[4],4)," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -316,7 +318,8 @@ BCFModelFun[[3]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[2]+gg1
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
 
@@ -356,8 +359,8 @@ BCFModelFun[[3]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -374,8 +377,8 @@ BCFModelFun[[3]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -383,8 +386,8 @@ BCFModelFun[[3]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("1MG-A",round(aBCF,4),round(AIC,4),round(t(mean11),4)," "," ",round(t(sigma11),4)," "," ",round(t(mix_pi_1),4)," "," ",
                        round(t(mean22),4)," "," ",round(t(sigma22),4)," "," ",round(t(mix_pi_2),4)," "," ",
                        round(B111[1],4),round(B111[2],4),round(B111[3],4)," "," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -474,7 +477,8 @@ BCFModelFun[[4]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[2]+gg1
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -516,8 +520,8 @@ BCFModelFun[[4]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -534,8 +538,8 @@ BCFModelFun[[4]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -543,8 +547,8 @@ BCFModelFun[[4]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("1MG-EAD",round(aBCF,4),round(AIC,4),round(t(mean11),4)," "," ",round(t(sigma11),4)," "," ",round(t(mix_pi_1),4)," "," ",
                        round(t(mean22),4)," "," ",round(t(sigma22),4)," "," ",round(t(mix_pi_2),4)," "," ",
                        round(B111[1],4),round(B111[2],4),round(B111[3],4)," "," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -634,7 +638,8 @@ BCFModelFun[[5]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[2]+gg1
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
 
@@ -675,8 +680,8 @@ BCFModelFun[[5]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -693,8 +698,8 @@ BCFModelFun[[5]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -702,8 +707,8 @@ BCFModelFun[[5]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("1MG-NCD",round(aBCF,4),round(AIC,4),round(t(mean11),4)," "," ",round(t(sigma11),4)," "," ",round(t(mix_pi_1),4)," "," ",
                        round(t(mean22),4)," "," ",round(t(sigma22),4)," "," ",round(t(mix_pi_2),4)," "," ",
                        round(B111[1],4),round(B111[2],4),round(B111[3],4)," "," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -809,7 +814,8 @@ BCFModelFun[[6]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[4]+gg4; sigma22[2]<- sigma22[4]+gg3; sigma22[3]<- sigma22[4]+gg2
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -851,8 +857,8 @@ BCFModelFun[[6]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -869,8 +875,8 @@ BCFModelFun[[6]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -878,8 +884,8 @@ BCFModelFun[[6]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("2MG-AD",round(aBCF,4),round(AIC,4),round(t(mean11),4),round(t(sigma11),4),round(t(mix_pi_1),4),
                        round(t(mean22),4),round(t(sigma22),4),round(t(mix_pi_2),4),
                        round(B111[1],4),round(B111[2],4),round(B111[3],4),round(B111[4],4),round(B111[5],4),round(B111[6],4),round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -1004,7 +1010,8 @@ BCFModelFun[[7]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[4]+gg4; sigma22[2]<- sigma22[4]+gg3; sigma22[3]<- sigma22[4]+gg2
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -1046,8 +1053,8 @@ BCFModelFun[[7]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -1064,8 +1071,8 @@ BCFModelFun[[7]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1073,8 +1080,8 @@ BCFModelFun[[7]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("2MG-A",round(aBCF,4),round(AIC,4),round(t(mean11),4),round(t(sigma11),4),round(t(mix_pi_1),4),
                        round(t(mean22),4),round(t(sigma22),4),round(t(mix_pi_2),4),
                        round(B111[1],4),round(B111[2],4),round(B111[3],4),round(B111[4],4)," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -1192,6 +1199,8 @@ BCFModelFun[[8]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[3]+gg3; sigma22[2]<- sigma22[3]+gg2
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -1233,8 +1242,8 @@ BCFModelFun[[8]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -1251,8 +1260,8 @@ BCFModelFun[[8]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1260,8 +1269,8 @@ BCFModelFun[[8]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("2MG-EA",round(aBCF,4),round(AIC,4),round(t(mean11),4)," ",round(t(sigma11),4)," ",round(t(mix_pi_1),4)," ",
                        round(t(mean22),4)," ",round(t(sigma22),4)," ",round(t(mix_pi_2),4)," ",
                        round(B111[1],4),round(B111[2],4),round(B111[3],4)," "," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -1386,7 +1395,8 @@ BCFModelFun[[9]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[4]+gg4; sigma22[2]<- sigma22[4]+gg3; sigma22[3]<- sigma22[4]+gg2
-
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -1428,8 +1438,8 @@ BCFModelFun[[9]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -1446,8 +1456,8 @@ BCFModelFun[[9]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1455,8 +1465,8 @@ BCFModelFun[[9]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("2MG-CD",round(aBCF,4),round(AIC,4),round(t(mean11),4),round(t(sigma11),4),round(t(mix_pi_1),4),
                        round(t(mean22),4),round(t(sigma22),4),round(t(mix_pi_2),4),
                        round(B111[1],4),round(B111[2],4),round(B111[3],4),round(B111[4],4)," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -1574,6 +1584,8 @@ BCFModelFun[[10]] <- function(K1,logL,df11,df21,BCFtext2){
       if (n_iter>20) break
     }
     sigma22[1]<- sigma22[3]+gg3; sigma22[2]<- sigma22[3]+gg2
+    if(sum(sigma11 < 1e-30)>=1){break}
+    if(sum(sigma22 < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samB1,d2,mix_pi_1,mean11,sigma11,dataB1)+logL(n_samB2,d2,mix_pi_2,mean22,sigma22,dataB2)
@@ -1615,8 +1627,8 @@ BCFModelFun[[10]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B1 <- as.matrix(c(sum(P2_B1),sum(P2_B1^2),sum((P2_B1-0.5)^2)))
   WW2_B1 <- 1/(12*n_samB1) + sum((P2_B1 - (as.matrix(c(1:n_samB1)) - 0.5)/n_samB1)^2)
   u_B1 <- as.matrix(c(12*n_samB1*((dd_B1[1]/n_samB1-0.5)^2),((45*n_samB1)/4)*((dd_B1[2]/n_samB1-1/3)^2),180*n_samB1*((dd_B1[3]/n_samB1-1/12)^2)))
-  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[[1]][1])
-  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),(1-pkolm(D_B1,n_samB1))))
+  D_B1 <- as.numeric(ks.test(P2_B1,"punif")[1:2])
+  tt_B1 <- as.matrix(c((1 - pchisq(u_B1[1],1)),(1 - pchisq(u_B1[2],1)),(1 - pchisq(u_B1[3],1)),K1(WW2_B1),D_B1[2]))
 
   ###############  B2  ###################
   dataB2<-sort(dataB2);bmw_B2 <- matrix(0,n_samB2,1); bmwsl_B2 <- matrix(0,n_samB2,d2)
@@ -1633,8 +1645,8 @@ BCFModelFun[[10]] <- function(K1,logL,df11,df21,BCFtext2){
   dd_B2 <- as.matrix(c(sum(P2_B2),sum(P2_B2^2),sum((P2_B2-0.5)^2)))
   WW2_B2 <- 1/(12*n_samB2) + sum((P2_B2 - (as.matrix(c(1:n_samB2)) - 0.5)/n_samB2)^2)
   u_B2 <- as.matrix(c(12*n_samB2*((dd_B2[1]/n_samB2-0.5)^2),((45*n_samB2)/4)*((dd_B2[2]/n_samB2-1/3)^2),180*n_samB2*((dd_B2[3]/n_samB2-1/12)^2)))
-  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[[1]][1])
-  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),(1-pkolm(D_B2,n_samB2))))
+  D_B2 <- as.numeric(ks.test(P2_B2,"punif")[1:2])
+  tt_B2 <- as.matrix(c((1 - pchisq(u_B2[1],1)),(1 - pchisq(u_B2[2],1)),(1 - pchisq(u_B2[3],1)),K1(WW2_B2),D_B2[2]))
 
   tt_B1[which(tt_B1>=10e-4)]<-round(tt_B1[which(tt_B1>=10e-4)],4);tt_B1[which(tt_B1<10e-4)]<-format(tt_B1[which(tt_B1<10e-4)],scientific=TRUE,digit=4)
   tt_B2[which(tt_B2>=10e-4)]<-round(tt_B2[which(tt_B2>=10e-4)],4);tt_B2[which(tt_B2<10e-4)]<-format(tt_B2[which(tt_B2<10e-4)],scientific=TRUE,digit=4)
@@ -1642,8 +1654,8 @@ BCFModelFun[[10]] <- function(K1,logL,df11,df21,BCFtext2){
   output <- data.frame("2MG-EAD",round(aBCF,4),round(AIC,4),round(t(mean11),4)," ",round(t(sigma11),4)," ",round(t(mix_pi_1),4)," ",
                        round(t(mean22),4)," ",round(t(sigma22),4)," ",round(t(mix_pi_2),4)," ",
                        round(B111[1],4),round(B111[2],4),round(B111[3],4)," "," "," ",round(jj_1,4),round(ll_1*100,4),round(jj_2,4),round(ll_2*100,4),
-                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1,4),tt_B1[5],
-                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2,4),tt_B2[5])
+                       round(u_B1[1],4),tt_B1[1],round(u_B1[2],4),tt_B1[2],round(u_B1[3],4),tt_B1[3],round(WW2_B1,4),tt_B1[4],round(D_B1[1],4),tt_B1[5],
+                       round(u_B2[1],4),tt_B2[1],round(u_B2[2],4),tt_B2[2],round(u_B2[3],4),tt_B2[3],round(WW2_B2,4),tt_B2[4],round(D_B2[1],4),tt_B2[5])
   output<-as.matrix(output)
   OUTPUT<-list(output,mi_1,mi_2)
   return(OUTPUT)
@@ -1684,7 +1696,6 @@ if(model=="All models"){
   i<-NULL
   allresult=foreach(i=1:10,.combine = 'rbind')%dopar%{
     requireNamespace("KScorrect")
-    requireNamespace("kolmim")
     BCFModelFun[[i]](K1BCF,logLBCF,df11,df21,BCFtext2)[[1]]
   }
   stopCluster(cl)

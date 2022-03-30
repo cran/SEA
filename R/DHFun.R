@@ -37,8 +37,9 @@ DHModelFun[[1]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -78,6 +79,7 @@ DHModelFun[[2]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -108,8 +110,9 @@ DHModelFun[[2]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -148,6 +151,7 @@ DHModelFun[[3]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -178,8 +182,9 @@ DHModelFun[[3]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -226,7 +231,7 @@ DHModelFun[[4]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -257,8 +262,9 @@ DHModelFun[[4]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -304,6 +310,7 @@ DHModelFun[[5]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -334,8 +341,9 @@ DHModelFun[[5]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -376,7 +384,7 @@ DHModelFun[[6]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -407,8 +415,9 @@ DHModelFun[[6]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -447,7 +456,7 @@ DHModelFun[[7]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -478,8 +487,9 @@ DHModelFun[[7]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -520,7 +530,7 @@ DHModelFun[[8]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -551,8 +561,9 @@ DHModelFun[[8]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -593,7 +604,7 @@ DHModelFun[[9]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -624,8 +635,9 @@ DHModelFun[[9]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -666,7 +678,7 @@ DHModelFun[[10]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -697,8 +709,9 @@ DHModelFun[[10]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -740,7 +753,7 @@ DHModelFun[[11]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -778,8 +791,9 @@ DHModelFun[[11]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -847,7 +861,7 @@ DHModelFun[[12]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -878,8 +892,9 @@ DHModelFun[[12]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -937,7 +952,7 @@ DHModelFun[[13]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -968,8 +983,9 @@ DHModelFun[[13]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1033,7 +1049,7 @@ DHModelFun[[14]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1064,8 +1080,9 @@ DHModelFun[[14]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1158,7 +1175,7 @@ DHModelFun[[15]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1202,8 +1219,9 @@ DHModelFun[[15]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1266,7 +1284,7 @@ DHModelFun[[16]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1297,8 +1315,9 @@ DHModelFun[[16]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1390,7 +1409,7 @@ DHModelFun[[17]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1422,8 +1441,9 @@ DHModelFun[[17]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1507,7 +1527,7 @@ DHModelFun[[18]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -1538,8 +1558,9 @@ DHModelFun[[18]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
 
@@ -1583,7 +1604,6 @@ if(model=="All models"){
   i<-NULL
   allresult=foreach(i=1:18,.combine = 'rbind')%dopar%{
     requireNamespace("KScorrect")
-    requireNamespace("kolmim")
     requireNamespace("MASS")
     DHModelFun[[i]](K1DH,logLDH,df)[[1]]
   }

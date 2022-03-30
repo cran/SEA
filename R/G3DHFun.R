@@ -44,8 +44,9 @@ G3DHModelFun[[1]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -61,8 +62,9 @@ G3DHModelFun[[1]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,1)
@@ -79,8 +81,9 @@ G3DHModelFun[[1]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -134,6 +137,8 @@ G3DHModelFun[[2]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaA<-matrix((sigma/m_fam),d2,1)
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaA < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanA,sqrt(sigmaA),mix_pi)))
@@ -169,8 +174,9 @@ G3DHModelFun[[2]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -187,8 +193,9 @@ G3DHModelFun[[2]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -205,8 +212,9 @@ G3DHModelFun[[2]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -260,7 +268,8 @@ G3DHModelFun[[3]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
 
@@ -296,8 +305,9 @@ G3DHModelFun[[3]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -314,8 +324,9 @@ G3DHModelFun[[3]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -332,8 +343,9 @@ G3DHModelFun[[3]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -392,7 +404,8 @@ G3DHModelFun[[4]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
 
@@ -428,8 +441,9 @@ G3DHModelFun[[4]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -446,8 +460,9 @@ G3DHModelFun[[4]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -464,8 +479,9 @@ G3DHModelFun[[4]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -526,6 +542,8 @@ G3DHModelFun[[5]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
@@ -561,8 +579,9 @@ G3DHModelFun[[5]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -579,8 +598,9 @@ G3DHModelFun[[5]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -597,8 +617,9 @@ G3DHModelFun[[5]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -655,7 +676,8 @@ G3DHModelFun[[6]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
@@ -691,8 +713,9 @@ G3DHModelFun[[6]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -709,8 +732,9 @@ G3DHModelFun[[6]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -727,8 +751,9 @@ G3DHModelFun[[6]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -786,7 +811,8 @@ G3DHModelFun[[7]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
 
@@ -821,8 +847,9 @@ G3DHModelFun[[7]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -839,8 +866,9 @@ G3DHModelFun[[7]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -857,8 +885,9 @@ G3DHModelFun[[7]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -917,7 +946,8 @@ G3DHModelFun[[8]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
 
@@ -953,8 +983,9 @@ G3DHModelFun[[8]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -971,8 +1002,9 @@ G3DHModelFun[[8]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -989,8 +1021,9 @@ G3DHModelFun[[8]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1047,7 +1080,8 @@ G3DHModelFun[[9]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
@@ -1084,8 +1118,9 @@ G3DHModelFun[[9]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1102,8 +1137,9 @@ G3DHModelFun[[9]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1120,8 +1156,9 @@ G3DHModelFun[[9]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1179,7 +1216,8 @@ G3DHModelFun[[10]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
@@ -1216,8 +1254,9 @@ G3DHModelFun[[10]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1234,8 +1273,9 @@ G3DHModelFun[[10]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1252,8 +1292,9 @@ G3DHModelFun[[10]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1311,7 +1352,8 @@ G3DHModelFun[[11]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
 
     sigma<-(ss1+ss2+sum(swx)*m_fam)/(n_samP1+n_samP2+n_samDH)
     sigmaB<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaB < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanB,sqrt(sigmaB),mix_pi)))
 
@@ -1347,8 +1389,9 @@ G3DHModelFun[[11]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1365,8 +1408,9 @@ G3DHModelFun[[11]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1383,8 +1427,9 @@ G3DHModelFun[[11]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1440,6 +1485,8 @@ G3DHModelFun[[12]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- swx/n_samDH-sigma/m_fam;
     if (s1<0.0) { s1<- 0.0 }
     sigmaC<- s1+sigma/m_fam
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaC < 1e-30)>=1){break}
     ######## criteria for iterations to stop #######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+logL(n_samDH,1,1,meanC,sigmaC,dataDH)
@@ -1476,8 +1523,9 @@ G3DHModelFun[[12]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1494,8 +1542,9 @@ G3DHModelFun[[12]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1511,8 +1560,9 @@ G3DHModelFun[[12]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1578,7 +1628,8 @@ G3DHModelFun[[13]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     ########CM3 variance of polygenes #############
     s1<- swx/n_samDH-sigma/m_fam
     sigmaC <- s1+ sigma/m_fam
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaC < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+logL(n_samDH,1,1,meanC,sigmaC,dataDH)
@@ -1614,8 +1665,9 @@ G3DHModelFun[[13]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1632,8 +1684,9 @@ G3DHModelFun[[13]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1650,8 +1703,9 @@ G3DHModelFun[[13]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1729,7 +1783,8 @@ G3DHModelFun[[14]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaD<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaD < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanD,sqrt(sigmaD),mix_pi)))
@@ -1768,8 +1823,9 @@ G3DHModelFun[[14]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1786,8 +1842,9 @@ G3DHModelFun[[14]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1804,8 +1861,9 @@ G3DHModelFun[[14]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -1884,7 +1942,8 @@ G3DHModelFun[[15]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0 }
     sigmaD<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaD < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanD,sqrt(sigmaD),mix_pi)))
@@ -1924,8 +1983,9 @@ G3DHModelFun[[15]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -1942,8 +2002,9 @@ G3DHModelFun[[15]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -1960,8 +2021,9 @@ G3DHModelFun[[15]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -2036,7 +2098,8 @@ G3DHModelFun[[16]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
@@ -2076,8 +2139,9 @@ G3DHModelFun[[16]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -2094,8 +2158,9 @@ G3DHModelFun[[16]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -2112,8 +2177,9 @@ G3DHModelFun[[16]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -2195,7 +2261,8 @@ G3DHModelFun[[17]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
 
@@ -2234,8 +2301,9 @@ G3DHModelFun[[17]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -2252,8 +2320,9 @@ G3DHModelFun[[17]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -2270,8 +2339,9 @@ G3DHModelFun[[17]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -2363,7 +2433,8 @@ G3DHModelFun[[18]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
@@ -2403,8 +2474,9 @@ G3DHModelFun[[18]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -2421,8 +2493,9 @@ G3DHModelFun[[18]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -2439,8 +2512,9 @@ G3DHModelFun[[18]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -2474,8 +2548,7 @@ G3DHModelFun[[19]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   a1 <- sqrt(sigma_dh)
   if(mean11<mean12){a1=-a1}
 
-  #meanE <- as.matrix(c((meanE+2.5*a1),meanE,(meanE-2.5*a1)))
-  meanE <- as.matrix(c(114,100,86))
+  meanE <- as.matrix(c((meanE+2.5*a1),meanE,(meanE-2.5*a1)))
 
   ##########iteration process###########
   iteration <- 0; stopa <- 1000
@@ -2533,7 +2606,8 @@ G3DHModelFun[[19]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
 
@@ -2572,8 +2646,9 @@ G3DHModelFun[[19]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -2590,8 +2665,9 @@ G3DHModelFun[[19]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -2608,8 +2684,9 @@ G3DHModelFun[[19]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -2691,7 +2768,8 @@ G3DHModelFun[[20]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
 
@@ -2730,8 +2808,9 @@ G3DHModelFun[[20]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -2748,8 +2827,9 @@ G3DHModelFun[[20]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -2766,8 +2846,9 @@ G3DHModelFun[[20]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -2849,7 +2930,8 @@ G3DHModelFun[[21]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
@@ -2889,8 +2971,9 @@ G3DHModelFun[[21]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -2907,8 +2990,9 @@ G3DHModelFun[[21]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -2925,8 +3009,9 @@ G3DHModelFun[[21]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3008,7 +3093,8 @@ G3DHModelFun[[22]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
@@ -3048,8 +3134,9 @@ G3DHModelFun[[22]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -3066,8 +3153,9 @@ G3DHModelFun[[22]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -3084,8 +3172,9 @@ G3DHModelFun[[22]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3164,7 +3253,8 @@ G3DHModelFun[[23]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
@@ -3204,8 +3294,9 @@ G3DHModelFun[[23]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -3222,8 +3313,9 @@ G3DHModelFun[[23]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -3240,8 +3332,9 @@ G3DHModelFun[[23]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3320,7 +3413,8 @@ G3DHModelFun[[24]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
 
@@ -3359,8 +3453,9 @@ G3DHModelFun[[24]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -3377,8 +3472,9 @@ G3DHModelFun[[24]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -3395,8 +3491,9 @@ G3DHModelFun[[24]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3475,7 +3572,8 @@ G3DHModelFun[[25]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaE<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaE < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanE,sqrt(sigmaE),mix_pi)))
@@ -3515,8 +3613,9 @@ G3DHModelFun[[25]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -3533,8 +3632,9 @@ G3DHModelFun[[25]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -3551,8 +3651,9 @@ G3DHModelFun[[25]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3628,7 +3729,8 @@ G3DHModelFun[[26]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaF<- matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaF < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanF,sqrt(sigmaF),mix_pi)))
@@ -3669,8 +3771,9 @@ G3DHModelFun[[26]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -3687,8 +3790,9 @@ G3DHModelFun[[26]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -3705,8 +3809,9 @@ G3DHModelFun[[26]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3815,7 +3920,8 @@ G3DHModelFun[[27]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaF<- matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaF < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanF,sqrt(sigmaF),mix_pi)))
 
@@ -3854,8 +3960,9 @@ G3DHModelFun[[27]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -3872,8 +3979,9 @@ G3DHModelFun[[27]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -3890,8 +3998,9 @@ G3DHModelFun[[27]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -3980,7 +4089,8 @@ G3DHModelFun[[28]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaF<- matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaF < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanF,sqrt(sigmaF),mix_pi)))
 
@@ -4018,8 +4128,9 @@ G3DHModelFun[[28]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -4036,8 +4147,9 @@ G3DHModelFun[[28]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -4054,8 +4166,9 @@ G3DHModelFun[[28]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -4153,7 +4266,8 @@ G3DHModelFun[[29]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaF<- matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaF < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanF,sqrt(sigmaF),mix_pi)))
 
@@ -4192,8 +4306,9 @@ G3DHModelFun[[29]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -4210,8 +4325,9 @@ G3DHModelFun[[29]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -4228,8 +4344,9 @@ G3DHModelFun[[29]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -4309,7 +4426,8 @@ G3DHModelFun[[30]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaG<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaG < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanG,sqrt(sigmaG),mix_pi)))
@@ -4349,8 +4467,9 @@ G3DHModelFun[[30]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -4367,8 +4486,9 @@ G3DHModelFun[[30]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -4385,8 +4505,9 @@ G3DHModelFun[[30]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -4470,7 +4591,8 @@ G3DHModelFun[[31]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaG<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaG < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanG,sqrt(sigmaG),mix_pi)))
@@ -4510,8 +4632,9 @@ G3DHModelFun[[31]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -4528,8 +4651,9 @@ G3DHModelFun[[31]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -4546,8 +4670,9 @@ G3DHModelFun[[31]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -4666,7 +4791,8 @@ G3DHModelFun[[32]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaG<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaG < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanG,sqrt(sigmaG),mix_pi)))
 
@@ -4705,8 +4831,9 @@ G3DHModelFun[[32]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -4723,8 +4850,9 @@ G3DHModelFun[[32]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -4741,8 +4869,9 @@ G3DHModelFun[[32]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -4845,7 +4974,8 @@ G3DHModelFun[[33]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaG<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaG < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanG,sqrt(sigmaG),mix_pi)))
 
@@ -4883,8 +5013,9 @@ G3DHModelFun[[33]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -4901,8 +5032,9 @@ G3DHModelFun[[33]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -4919,8 +5051,9 @@ G3DHModelFun[[33]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -5030,7 +5163,8 @@ G3DHModelFun[[34]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     s1<- sum(swx)/n_samDH-sigma/m_fam
     if (s1<0.0){ s1<- 0.000001 }
     sigmaG<- matrix((s1+sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaG < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanG,sqrt(sigmaG),mix_pi)))
 
@@ -5068,8 +5202,9 @@ G3DHModelFun[[34]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -5086,8 +5221,9 @@ G3DHModelFun[[34]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -5104,8 +5240,9 @@ G3DHModelFun[[34]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -5139,7 +5276,8 @@ G3DHModelFun[[35]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   a1 <- sqrt(sigma_dh)
   if(mean11<mean12){a1=-a1}
 
-  meanH <- as.matrix(c(222,146,114,138,114,78,50,54,152,96,76,100,84,68,72,56))
+  meanH <- as.matrix(c((meanH+3*a1),(meanH+2.7*a1),(meanH+2.4*a1),(meanH+2.1*a1),(meanH+1.8*a1),(meanH+1.5*a1),(meanH+1.2*a1),(meanH+0.9*a1),
+                       (meanH-0.9*a1),(meanH-1.2*a1),(meanH-1.5*a1),(meanH-1.8*a1),(meanH-2.1*a1),(meanH-2.4*a1),(meanH-2.7*a1),(meanH-3*a1)))
   ##########iteration process###########
   iteration <- 0; stopa <- 1000
   WW <- matrix(0,d2,n_samDH); swx <- matrix(0,d2,1)
@@ -5233,7 +5371,8 @@ G3DHModelFun[[35]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaH<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaH < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanH,sqrt(sigmaH),mix_pi)))
     stopa <- L1 - L0
@@ -5269,8 +5408,9 @@ G3DHModelFun[[35]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -5287,8 +5427,9 @@ G3DHModelFun[[35]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -5305,8 +5446,9 @@ G3DHModelFun[[35]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -5411,7 +5553,8 @@ G3DHModelFun[[36]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaH<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaH < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanH,sqrt(sigmaH),mix_pi)))
 
@@ -5445,8 +5588,9 @@ G3DHModelFun[[36]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -5463,8 +5607,9 @@ G3DHModelFun[[36]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -5481,8 +5626,9 @@ G3DHModelFun[[36]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -5606,7 +5752,8 @@ G3DHModelFun[[37]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaH<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaH < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanH,sqrt(sigmaH),mix_pi)))
@@ -5641,8 +5788,9 @@ G3DHModelFun[[37]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -5659,8 +5807,9 @@ G3DHModelFun[[37]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -5677,8 +5826,9 @@ G3DHModelFun[[37]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -5796,7 +5946,8 @@ G3DHModelFun[[38]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
     }
     if (sigma<0.1*sigma0){ sigma<- 0.1*sigma0 }
     sigmaH<-matrix((sigma/m_fam),d2,1)
-
+    if(sum(sigma < 1e-30)>=1){break}
+    if(sum(sigmaH < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
 
     L1 <- logL(n_samP1,1,1,mean11,sigma,dataP1)+logL(n_samP2,1,1,mean12,sigma,dataP2)+sum(log(dmixnorm(dataDH,meanH,sqrt(sigmaH),mix_pi)))
@@ -5831,8 +5982,9 @@ G3DHModelFun[[38]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P1 <- as.matrix(c(sum(P2_P1),sum(P2_P1^2),sum((P2_P1-0.5)^2)))
   WW2_P1 <- 1/(12*n_samP1) + sum((P2_P1 - (as.matrix(c(1:n_samP1)) - 0.5)/n_samP1)^2)
   u_P1 <- as.matrix(c(12*n_samP1*((dd_P1[1]/n_samP1-0.5)^2),((45*n_samP1)/4)*((dd_P1[2]/n_samP1-1/3)^2),180*n_samP1*((dd_P1[3]/n_samP1-1/12)^2)))
+  D_P1 <- as.numeric(ks.test(P2_P1,"punif")[2])
+  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),D_P1))
   D_P1 <- as.numeric(ks.test(P2_P1,"punif")[[1]][1])
-  tt_P1 <- as.matrix(c((1 - pchisq(u_P1[1],1)),(1 - pchisq(u_P1[2],1)),(1 - pchisq(u_P1[3],1)),K1(WW2_P1),(1-pkolm(D_P1,n_samP1))))
 
   ###############  P2  ###################
   dataP2<-sort(dataP2);bmw_P2 <- matrix(0,n_samP2,1); bmwsl_P2 <- matrix(0,n_samP2,1)
@@ -5849,8 +6001,9 @@ G3DHModelFun[[38]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd_P2 <- as.matrix(c(sum(P2_P2),sum(P2_P2^2),sum((P2_P2-0.5)^2)))
   WW2_P2 <- 1/(12*n_samP2) + sum((P2_P2 - (as.matrix(c(1:n_samP2)) - 0.5)/n_samP2)^2)
   u_P2 <- as.matrix(c(12*n_samP2*((dd_P2[1]/n_samP2-0.5)^2),((45*n_samP2)/4)*((dd_P2[2]/n_samP2-1/3)^2),180*n_samP2*((dd_P2[3]/n_samP2-1/12)^2)))
+  D_P2 <- as.numeric(ks.test(P2_P2,"punif")[2])
+  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),D_P2))
   D_P2 <- as.numeric(ks.test(P2_P2,"punif")[[1]][1])
-  tt_P2 <- as.matrix(c((1 - pchisq(u_P2[1],1)),(1 - pchisq(u_P2[2],1)),(1 - pchisq(u_P2[3],1)),K1(WW2_P2),(1-pkolm(D_P2,n_samP2))))
 
   ###############  DH  ###################
   dataDH<-sort(dataDH);bmw <- matrix(0,n_samDH,1); bmwsl <- matrix(0,n_samDH,d2)
@@ -5867,8 +6020,9 @@ G3DHModelFun[[38]] <- function(K1,logL,df11,df21,df31,G3DHtext2){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*n_samDH) + sum((P2 - (as.matrix(c(1:n_samDH)) - 0.5)/n_samDH)^2)
   u <- as.matrix(c(12*n_samDH*((dd[1]/n_samDH-0.5)^2),((45*n_samDH)/4)*((dd[2]/n_samDH-1/3)^2),180*n_samDH*((dd[3]/n_samDH-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,n_samDH))))
 
   tt_P1[which(tt_P1>=10e-4)]<-round(tt_P1[which(tt_P1>=10e-4)],4);tt_P1[which(tt_P1<10e-4)]<-format(tt_P1[which(tt_P1<10e-4)],scientific=TRUE,digit=4)
   tt_P2[which(tt_P2>=10e-4)]<-round(tt_P2[which(tt_P2>=10e-4)],4);tt_P2[which(tt_P2<10e-4)]<-format(tt_P2[which(tt_P2<10e-4)],scientific=TRUE,digit=4)
@@ -5919,7 +6073,6 @@ registerDoParallel(cl)
 i<-NULL
 allresult=foreach(i=1:38,.combine = 'rbind')%dopar%{
   requireNamespace("KScorrect")
-  requireNamespace("kolmim")
   requireNamespace("MASS")
   G3DHModelFun[[i]](K1G3DH,logLG3DH,df11,df21,df31,G3DHtext2)[[1]]
 }

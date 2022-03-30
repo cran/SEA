@@ -32,8 +32,9 @@ F2ModelFun[[1]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P1),sum(P1^2),sum((P1-0.5)^2)))
   WW <- 1/(12*m_sam) + sum((P1 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P1,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW),D))
   D <- as.numeric(ks.test(P1,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("0MG",round(abc,4),round(AICm,4),round(m,4)," "," "," "," "," "," "," "," ",round(sigma,4),round(mix_pi,4)," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ",round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW,4),tt[4],round(D,4), tt[5])
@@ -71,6 +72,7 @@ F2ModelFun[[2]] <- function(K1,logL,df){
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(c(swx/n0),3,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -101,8 +103,9 @@ F2ModelFun[[2]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P2),sum(P2^2),sum((P2-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P2 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P2,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P2,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-AD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," ",round(B1[3],4)," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -147,6 +150,7 @@ F2ModelFun[[3]] <- function(K1,logL,df)
     for(i in 1:d2) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(c(swx/n0),3,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -177,8 +181,9 @@ F2ModelFun[[3]] <- function(K1,logL,df)
   dd <- as.matrix(c(sum(P3),sum(P3^2),sum((P3-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P3 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P3,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P3,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-A",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -217,6 +222,7 @@ F2ModelFun[[4]] <- function(K1,logL,df){
     for(i in 1:d3) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(c(swx/n0),2,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -247,8 +253,9 @@ F2ModelFun[[4]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P4),sum(P4^2),sum((P4-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P4 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P4,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P4,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-EAD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -287,6 +294,7 @@ F2ModelFun[[5]] <- function(K1,logL,df){
     for(i in 1:d3) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,2,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -317,8 +325,9 @@ F2ModelFun[[5]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P4),sum(P4^2),sum((P4-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P4 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P4,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P4,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("1MG-NCD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," "," ",round(B1[1],4),round(B1[2],4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -359,6 +368,7 @@ F2ModelFun[[6]] <- function(K1,logL,df)
     for(i in 1:d4) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,9,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -391,8 +401,9 @@ F2ModelFun[[6]] <- function(K1,logL,df)
   dd <- as.matrix(c(sum(P6),sum(P6^2),sum((P6-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P6 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P6,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-ADI",round(abc,4),round(AICm,4),round(t(m),4),round(sigma[1],4),round(t(mix_pi),4),round(t(B5),4),round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -461,6 +472,7 @@ F2ModelFun[[7]] <- function(K1,logL,df){
     for(i in 1:d4) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(swx/n0,9,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -492,8 +504,9 @@ F2ModelFun[[7]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P6),sum(P6^2),sum((P6-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P6 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P6,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-AD",round(abc,4),round(AICm,4),round(t(m),4),round(sigma[1],4),round(t(mix_pi),4),round(t(B61),4)," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -575,6 +588,7 @@ F2ModelFun[[8]] <- function(K1,logL,df){
     for(i in 1:d4) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(c(swx/n0),9,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -605,8 +619,9 @@ F2ModelFun[[8]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P6),sum(P6^2),sum((P6-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P6 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P6,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-A",round(abc,4),round(AICm,4),round(t(m),4),round(sigma[1],4),round(t(mix_pi),4),round(t(B71),4)," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -667,6 +682,7 @@ F2ModelFun[[9]] <- function(K1,logL,df){
     for(i in 1:d5) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(c(swx/n0),5,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -697,8 +713,9 @@ F2ModelFun[[9]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P6),sum(P6^2),sum((P6-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P6 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P6,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-EA",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," ",round(t(B81),4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -741,6 +758,7 @@ F2ModelFun[[10]] <- function(K1,logL,df){
     for(i in 1:d6) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,4,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -771,8 +789,9 @@ F2ModelFun[[10]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P6),sum(P6^2),sum((P6-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P6 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P6,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-CD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," ",round(t(B9),4)," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -815,6 +834,7 @@ F2ModelFun[[11]] <- function(K1,logL,df){
     for(i in 1:d7) {  swx[i] <- WW[i,]%*%(data-m[i])^2 }
     s0 <- sum(swx)
     sigma <- matrix(s0/m_sam,3,1)
+    if(sum(sigma < 1e-30)>=1){break}
     ########criteria for iterations to stop#######
     L1 <- sum(log(dmixnorm(data,m,sqrt(sigma),mix_pi)))
     stopa <- L1 - L0
@@ -845,8 +865,9 @@ F2ModelFun[[11]] <- function(K1,logL,df){
   dd <- as.matrix(c(sum(P6),sum(P6^2),sum((P6-0.5)^2)))
   WW2 <- 1/(12*m_sam) + sum((P6 - (as.matrix(c(1:m_sam)) - 0.5)/m_sam)^2)
   u <- as.matrix(c(12*m_sam*((dd[1]/m_sam-0.5)^2),((45*m_sam)/4)*((dd[2]/m_sam-1/3)^2),180*m_sam*((dd[3]/m_sam-1/12)^2)))
+  D <- as.numeric(ks.test(P6,"punif")[2])
+  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),D))
   D <- as.numeric(ks.test(P6,"punif")[[1]][1])
-  tt <- as.matrix(c((1 - pchisq(u[1],1)),(1 - pchisq(u[2],1)),(1 - pchisq(u[3],1)),K1(WW2),(1-pkolm(D,m_sam))))
 
   tt[which(tt>=10e-4)]<-round(tt[which(tt>=10e-4)],4);tt[which(tt<10e-4)]<-format(tt[which(tt<10e-4)],scientific=TRUE,digit=4)
   output <- data.frame("2MG-EAD",round(abc,4),round(AICm,4),round(t(m),4)," "," "," "," "," "," ",round(sigma[1],4),round(t(mix_pi),4)," "," "," "," "," "," ",round(t(B10),4)," "," "," "," "," "," "," ",round(jj,4),round(ll*100,4),round(u[1],4),tt[1],round(u[2],4),tt[2],round(u[3],4),tt[3],round(WW2,4),tt[4],round(D,4), tt[5])
@@ -891,7 +912,6 @@ if(model=="All models"){
  i<-NULL
  allresult=foreach(i=1:11,.combine = 'rbind')%dopar%{
    requireNamespace("KScorrect")
-   requireNamespace("kolmim")
     F2ModelFun[[i]](K1F2,logLF2,df)[[1]]
   }
 

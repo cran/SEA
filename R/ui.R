@@ -6,28 +6,28 @@ ui <-tagList(
              h2("or",align="center"),
              h2("Mixed major-genes plus polygenes inheritance analysis",align="center"),
              br(),
-             h4("Version 2.0, Realeased February 2021",align="center"),
+             h4("Version 2.0.1, Realeased March 2022",align="center"),
              br(),
              column(10,
-                    h4("1. This second version of the software (SEA.R) was modified and validated via Monte Carlo 
+                    h4("1. This second version of the software (SEA.R) was modified and validated via Monte Carlo
 					   simulation studies by Mr Wang Jing-Tian in my lab, at College of Plant Science and Technology
 					   of Huazhong Agricultural University, from the 1st version of SEA.R."),
                     br(),
                     h4("2. The first version of SEA.R was developed by Mr Zhang Ya-Wen, Ms Du Ying-Wen, and Dr Ren
-                       Wen-Long in my lab, at College of Plant Science and Technology of Huazhong Agricultural 
+                       Wen-Long in my lab, at College of Plant Science and Technology of Huazhong Agricultural
 					   University, from the VC++ codes of mixed major genes plus polygenes inheritance analysis of
-					   quantitative traits, which also named SEgregation Analysis (SEA). Registration number for this 
+					   quantitative traits, which also named SEgregation Analysis (SEA). Registration number for this
 					   software copyright in China: 2017SR579357."),
                     br(),
                     h4(
-                      "3. The VC++ codes for the SEA software was developed by Mr Liu Bing and Mr Cao Xi-wen in my 
-					  lab at College of Agriculture of Nanjing Agricultural University, based on the turbo C++ 
-					  version of the SEA software. The copyright registration numbers for several software programs 
+                      "3. The VC++ codes for the SEA software was developed by Mr Liu Bing and Mr Cao Xi-wen in my
+					  lab at College of Agriculture of Nanjing Agricultural University, based on the turbo C++
+					  version of the SEA software. The copyright registration numbers for several software programs
 					  had been obtained in China."),
                     br(),
                     h4("4. The turbo C++ version of the SEA software was developed by Dr Yuan-Ming Zhang. This software
-					   is based on the EIM algorithm proposed by Zhang et al. Genetical Research 2003, 81(2): 157-163. 
-					   This version is widely used in China. Individual codes are derived from the EM algorithm based 
+					   is based on the EIM algorithm proposed by Zhang et al. Genetical Research 2003, 81(2): 157-163.
+					   This version is widely used in China. Individual codes are derived from the EM algorithm based
 					   SEA codes, written by Dr Wang Jiankang."),
                     br(),
                     offset=1)
@@ -398,19 +398,19 @@ ui <-tagList(
                        model and estimation of genetic parameters of a quantitative trait from F2 Progeny. Acta Genetica
                        Sinica 1997, 24(5): 432-440.(F2)"),
                     br(),
-                    h4("5.Zhang Yuan-Ming, Gai Junyi, Wang Jiankang. Identification of two major genes plus polygenes 
+                    h4("5.Zhang Yuan-Ming, Gai Junyi, Wang Jiankang. Identification of two major genes plus polygenes
 					   mixed inheritance model of quantitative traits in B1 and B2, and F2. Journal of Biomathematics 2000,
 					   15(3):358-366.(F2 and BC (B1 B2))"),
                     br(),
                     h4("6.Zhang Yuan-Ming, Gai Junyi, Qi Cunkou. Detection of genetic system of quantitative traits using
 					   backcross and selfing families. Hereditas (Beijing) 2001, 23(4):329-776.(F2:3)"),
                     br(),
-                    h4("7.Zhang Yuan-Ming, Gai Junyi, Wang Yongjun. An expansion of joint segregation analysis of 
-					   quantitative trait for using P1, P2 and DH or RIL populations. Hereditas (Beijing) 2001, 
+                    h4("7.Zhang Yuan-Ming, Gai Junyi, Wang Yongjun. An expansion of joint segregation analysis of
+					   quantitative trait for using P1, P2 and DH or RIL populations. Hereditas (Beijing) 2001,
 					   23(5):467-470.(DH and G3DH (P1 P2 DH))"),
                     br(),
                     h4("8.Wang Jinshe, Zhao Tuanjie, Gai Junyi. Establishment of segregation analysis of mixed inheritance
-            		   model with four major genes plus polygenes in backcross inbred lines (BIL) populations. Acta Agron 
+            		   model with four major genes plus polygenes in backcross inbred lines (BIL) populations. Acta Agron
 					   Sin 2013, 39(2):198-206.(BIL and BCF (B1:2 B2:2))"),
                     br(),
                     h4("9.Zhang Yuan-Ming, Gai Junyi, Zhang Mengchen. Jointly segregating analysis of P1 P2 F1 and F2 or F2:3
@@ -422,7 +422,7 @@ ui <-tagList(
 					   (G5BC (P1 P2 F1 B1 B2) and G5BCF (P1 P2 F1 B1:2 B2:2))"),
                     br(),
                     h4("11.Wang Jiankang, Gai Junyi. Identification of major gene and polygene mixed inheritance model of
-					   quantitative traits by using joint analysis of P1, F1, P2, F2 and F2:3 generations. Acta Agron Sin 
+					   quantitative traits by using joint analysis of P1, F1, P2, F2 and F2:3 generations. Acta Agron Sin
 					   1998, 24(6): 651-659.(G5 (P1 P2 F1 F2 F2:3))"),
                     br(),
                     h4("12.Gai Junyi, Wang Jiankang. Identification and estimation of a QTL model and its effects. Theor Appl
@@ -432,7 +432,7 @@ ui <-tagList(
  					   extended to mixed two major genes plus polygene. Acta Agron Sin 2000, 26(4):385-391.
 					   (G6 (P1 P2 F1 F2 B1 B2))"),
                     br(),
-                    h4("14.Zhang Yuan-Ming, Gai Junyi, Qi Cunkou. The precision of segregating analysis of quantitative trait 
+                    h4("14.Zhang Yuan-Ming, Gai Junyi, Qi Cunkou. The precision of segregating analysis of quantitative trait
 					   and its improving methods. Acta Agron Sin 2001, 27(6):787-793.
 					   (G6F (P1 F1 P2 B1:2 B2:2 F2:3))"),
                     offset=1)
